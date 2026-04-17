@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo ticket — HelpDesk IntegralTI</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <nav class="navbar">
+        <span class="navbar-marca">HelpDesk IntegralTI</span>
+        <div class="navbar-links">
+            <a href="/colaborador/tickets">Mis tickets</a>
+            <a href="/colaborador/tickets/nuevo" class="activo">Nuevo ticket</a>
+            <a href="/colaborador/perfil">Mi perfil</a>
+            <a href="/logout">Cerrar sesión</a>
+        </div>
+        <span class="navbar-usuario"><%= usuario.nombre %></span>
+    </nav>
+
+    <main class="contenedor">
+        <h1>Nuevo ticket</h1>
+        <p class="subtitulo">Describe tu problema y el equipo de soporte lo atenderá a la brevedad.</p>
+
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
+
+        <form method="POST" action="/colaborador/tickets/nuevo" class="formulario">
+            <div class="campo">
+                <label for="titulo">Título del problema *</label>
+                <input type="text" id="titulo" name="titulo" required
+                    placeholder="Ej: Excel no abre desde ayer">
+            </div>
+
+            <div class="fila-campos">
+                <div class="campo">
+                    <label for="id_categoria">Categoría *</label>
+                    <select id="id_categoria" name="id_categoria" required>
+                        <option value="">Selecciona una categoría</option>
+                        <% categorias.forEach(cat => { %>
+                            <option value="<%= cat.id_categoria %>"><%= cat.nombre_categoria %></option>
+                        <% }) %>
+                    </select>
+                </div>
+
+                <div class="campo">
+                    <label>Prioridad *</label>
+                    <div class="opciones-prioridad">
+                        <% prioridades.forEach(p => { %>
+                            <label class="opcion-prioridad">
+                                <input type="radio" name="id_prioridad" value="<%= p.id_prioridad %>" required>
+                                <span style="border-color:<%= p.color %>; color:<%= p.color %>">
+                                    <%= p.nombre_prioridad %>
+                                </span>
+                            </label>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="campo">
+                <label for="descripcion">Descripción del problema *</label>
+                <textarea id="descripcion" name="descripcion" rows="5" required
+                    placeholder="Describe con detalle qué ocurre, desde cuándo y qué intentaste hacer."></textarea>
+            </div>
+
+            <p class="nota">* Campos obligatorios</p>
+
+            <div class="acciones-formulario">
+                <a href="/colaborador/tickets" class="btn-secundario">Cancelar</a>
+                <button type="submit" class="btn-primario">Enviar ticket</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

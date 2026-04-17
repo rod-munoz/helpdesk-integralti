@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket #<%= ticket.id_ticket %> — HelpDesk IntegralTI</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <nav class="navbar">
+        <span class="navbar-marca">HelpDesk IntegralTI</span>
+        <div class="navbar-links">
+            <a href="/colaborador/tickets" class="activo">Mis tickets</a>
+            <a href="/colaborador/tickets/nuevo">Nuevo ticket</a>
+            <a href="/colaborador/perfil">Mi perfil</a>
+            <a href="/logout">Cerrar sesión</a>
+        </div>
+        <span class="navbar-usuario"><%= usuario.nombre %></span>
+    </nav>
+
+    <main class="contenedor">
+        <div class="cabecera-seccion">
+            <h1>Ticket #<%= ticket.id_ticket %></h1>
+            <a href="/colaborador/tickets" class="btn-secundario">Volver</a>
+        </div>
+
+        <div class="tarjeta-detalle">
+            <h2><%= ticket.titulo %></h2>
+
+            <div class="fila-campos">
+                <div class="dato">
+                    <span class="etiqueta">Estado</span>
+                    <span class="estado estado-<%= ticket.nombre_estado.toLowerCase().replace(' ', '-') %>">
+                        <%= ticket.nombre_estado %>
+                    </span>
+                </div>
+                <div class="dato">
+                    <span class="etiqueta">Prioridad</span>
+                    <span class="badge" style="background:<%= ticket.color %>20; color:<%= ticket.color %>">
+                        <%= ticket.nombre_prioridad %>
+                    </span>
+                </div>
+                <div class="dato">
+                    <span class="etiqueta">Categoría</span>
+                    <span><%= ticket.nombre_categoria %></span>
+                </div>
+                <div class="dato">
+                    <span class="etiqueta">Fecha</span>
+                    <span><%= new Date(ticket.fecha_creacion).toLocaleDateString('es-CL') %></span>
+                </div>
+            </div>
+
+            <div class="campo">
+                <span class="etiqueta">Descripción</span>
+                <p class="descripcion-ticket"><%= ticket.descripcion %></p>
+            </div>
+        </div>
+
+        <div class="seccion-conversacion">
+            <h3>Conversación</h3>
+            <p class="sin-datos">El historial de mensajes se cargará próximamente.</p>
+        </div>
+    </main>
+</body>
+</html>
