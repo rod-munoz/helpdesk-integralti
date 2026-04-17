@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel técnico — HelpDesk IntegralTI</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <nav class="navbar">
+        <span class="navbar-marca">HelpDesk IntegralTI</span>
+        <div class="navbar-links">
+            <a href="/tecnico/tickets" class="activo">Todos los tickets</a>
+            <a href="/tecnico/categorias">Categorías</a>
+            <a href="/tecnico/perfil">Mi perfil</a>
+            <a href="/logout">Cerrar sesión</a>
+        </div>
+        <span class="navbar-usuario"><%= usuario.nombre %> — Técnico</span>
+    </nav>
+
+    <main class="contenedor">
+        <h1 class="titulo-seccion">Gestión de tickets</h1>
+
+        <!-- Tarjetas resumen -->
+        <div class="tarjetas-resumen">
+            <% resumen.forEach(item => { %>
+            <div class="tarjeta-resumen">
+                <span class="tarjeta-numero"><%= item.total %></span>
+                <span class="tarjeta-label"><%= item.nombre_estado %></span>
+            </div>
+            <% }) %>
+        </div>
+
+        <!-- Filtros -->
+        <form method="GET" action="/tecnico/tickets" class="filtros">
+            <select name="estado">
+                <option value="">Todos los estados</option>
+                <% estados.forEach(e => { %>
+                    <option value="<%= e.id_estado %>"
+                        <%= filtros.estado == e.id_estado ? 'selected' : '' %>>
+                        <%= e.nombre_estado %>
+                    </option>
+                <% }) %>
+            </select>
+            <select name="categoria">
+                <option value="">Todas las categorías</option>
+                <% categorias.forEach(c => { %>
+                    <option value="<%= c.id_categoria %>"
+                        <%= filtros.categoria == c.id_categoria ? 'selected' : '' %>>
+                        <%= c.nombre_categoria %>
+                    </option>
+                <% }) %>
+            </select>
+            <select name="prioridad">
+                <option value="">Todas las prioridades</option>
+                <% prioridades.forEach(p => { %>
+                    <option value="<%= p.id_prioridad %>"
+                        <%= filtros.prioridad == p.id_prioridad ? 'selected' : '' %>>
+                        <%= p.nombre_prioridad %>
+                    </option>
+                <% }) %>
+            </select>
+            <button type="submit" class="btn-primario">Filtrar</button>
+            <a href="/tecnico/tickets" class="btn-secundario">Limpiar</a>
+        </form>
+
+        <!-- Tabla de tickets -->
+        <% if (tickets.length === 0) { %>
+            <p class="sin-datos">No hay tickets que coincidan con los filtros.</p>
+        <% } else { %>
+        <table class="tabla">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Título</th>
+                    <th>Colaborador</th>
+                    <th>Categoría</th>
+                    <th>Prioridad</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% tickets.forEach(ticket => { %>
+                <tr>
+                    <td>#<%= ticket.id_ticket %></td>
+                    <td><%= ticket.titulo %></td>
+                    <td><%= ticket.nombre_creador %> <%= ticket.apellido_creador %></td>
+                    <td><%= ticket.nombre_categoria %></td>
+                    <td>
+                        <span class="badge" style="background:<%= ticket.color %>20; color:<%= ticket.color %>">
+                            <%= ticket.nombre_prioridad %>
+                        </span>
+                    </td>
+                    <td>
+                        <span class="estado estado-<%= ticket.nombre_estado.toLowerCase().replace(' ', '-') %>">
+                            <%= ticket.nombre_estado %>
+                        </span>
+                    </td>
+                    <td><%= new Date(ticket.fecha_creacion).toLocaleDateString('es-CL') %></td>
+                    <td><a href="/tecnico/tickets/<%= ticket.id_ticket %>">Ver</a></td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <% } %>
+    </main>
+</body>
+</html>

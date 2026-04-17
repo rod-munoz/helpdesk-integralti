@@ -68,4 +68,82 @@ const obtenerPrioridades = async () => {
     return filas;
 };
 
-module.exports = { obtenerPorUsuario, obtenerPorId, crear, obtenerCategorias, obtenerPrioridades };
+// Obtiene todos los tickets del sistema para el panel técnico
+const obtenerTodos = async (filtros = {}) => {
+    let consulta = `
+        SELECT t.*, 
+            e.nombre_estado,
+            p.nombre_prioridad,
+            p.color,
+            c.nombre_categoria,
+            u.nombre AS nombre_creador,
+            u.apellido AS apellido_creador
+        FROM tickets t
+        JOIN estados e ON t.id_estado = e.id_estado
+        JOIN prioridades p ON t.id_prioridad = p.id_prioridad
+        JOIN categorias c ON t.id_categoria = c.id_categoria
+        JOIN usuarios u ON t.id_usuario_creador = u.id_usuario
+        WHERE 1=1
+    `;
+    const parametros = [];
+
+    if (filtros.id_estado) {
+        consulta += ' AND t.id_estado = ?';
+        parametros.push(filtros.id_estado);
+    }
+    if (filtros.id_categoria) {
+        consulta += ' AND t.id_categoria = ?';
+        parametros.push(filtros.id_categoria);
+    }
+    if (filtros.id_prioridad) {
+        consulta += ' AND t.id_prioridad = ?';
+        parametros.push(filtros.id_prioridad);
+    }
+
+    consulta += ' ORDER BY t.fecha_creacion DESC';
+    const [filas] = await db.pool.execute(consulta, parametros);
+    return filas;
+};
+
+// Cambia el estado de un ticket
+const cambiarEstado = async (id_ticket, id_estado) => {
+    // Si el estado es Cerrado (4), registra la fecha de cierre
+    const fechaCierre = id_estado == 4 ? new Date() : null;
+    await db.pool.execute(
+        'UPDATE tickets SET id_estado = ?, fecha_cierre = ? WHERE id_ticket = ?',
+        [id_estado, fechaCierre, id_ticket]
+    );
+};
+
+// Cambia la prioridad de un ticket
+const cambiarPrioridad = async (id_ticket, id_prioridad) => {
+    await db.pool.execute(
+        'UPDATE tickets SET id_prioridad = ? WHERE id_ticket = ?',
+        [id_prioridad, id_ticket]
+    );
+};
+
+// Obtiene todos los estados (para el formulario)
+const obtenerEstados = async () => {
+    const [filas] = await db.pool.execute('SELECT * FROM estados ORDER BY id_estado');
+    return filas;
+};
+
+// Resumen de tickets por estado para las tarjetas del panel
+const obtenerResumen = async () => {
+    const [filas] = await db.pool.execute(`
+        SELECT e.nombre_estado, COUNT(t.id_ticket) AS total
+        FROM estados e
+        LEFT JOIN tickets t ON e.id_estado = t.id_estado
+        GROUP BY e.id_estado, e.nombre_estado
+        ORDER BY e.id_estado
+    `);
+    return filas;
+};
+
+module.exports = { 
+    obtenerPorUsuario, obtenerPorId, crear, 
+    obtenerCategorias, obtenerPrioridades,
+    obtenerTodos, cambiarEstado, cambiarPrioridad, 
+    obtenerEstados, obtenerResumen
+};
