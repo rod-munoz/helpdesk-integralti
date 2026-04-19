@@ -84,4 +84,57 @@ const actualizarPrioridad = async (req, res) => {
     }
 };
 
-module.exports = { todosLosTickets, detalleTicket, actualizarEstado, actualizarPrioridad };
+const Respuesta = require('../models/Respuesta');
+
+// Muestra detalle con historial de mensajes
+const detalleTicketConMensajes = async (req, res) => {
+    try {
+        const [ticket, estados, prioridades, respuestas] = await Promise.all([
+            Ticket.obtenerPorId(req.params.id),
+            Ticket.obtenerEstados(),
+            Ticket.obtenerPrioridades(),
+            Respuesta.obtenerPorTicket(req.params.id)
+        ]);
+
+        if (!ticket) return res.redirect('/tecnico/tickets');
+
+        res.render('tecnico/detalle-ticket', {
+            ticket,
+            estados,
+            prioridades,
+            respuestas,
+            usuario: req.usuario
+        });
+    } catch (error) {
+        console.error('Error al obtener detalle:', error.message);
+        res.redirect('/tecnico/tickets');
+    }
+};
+
+// Procesa el envio de un mensaje
+const enviarRespuesta = async (req, res) => {
+    const { contenido } = req.body;
+    const id_ticket = req.params.id;
+
+    if (!contenido || !contenido.trim()) {
+        return res.redirect(`/tecnico/tickets/${id_ticket}`);
+    }
+
+    try {
+        await Respuesta.crear({
+            id_ticket,
+            id_usuario:  req.usuario.id,
+            contenido:   contenido.trim(),
+            nombre_rol:  req.usuario.rol
+        });
+        res.redirect(`/tecnico/tickets/${id_ticket}`);
+    } catch (error) {
+        console.error('Error al enviar respuesta:', error.message);
+        res.redirect(`/tecnico/tickets/${id_ticket}`);
+    }
+};
+
+module.exports = { 
+    todosLosTickets, detalleTicket, actualizarEstado, actualizarPrioridad,
+    detalleTicketConMensajes, enviarRespuesta
+};

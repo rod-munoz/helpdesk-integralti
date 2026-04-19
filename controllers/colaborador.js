@@ -82,4 +82,54 @@ const detalleTicket = async (req, res) => {
     }
 };
 
-module.exports = { misTickets, mostrarNuevoTicket, crearTicket, detalleTicket };
+const Respuesta = require('../models/Respuesta');
+
+// Muestra el detalle con historial de mensajes
+const detalleTicketConMensajes = async (req, res) => {
+    try {
+        const ticket = await Ticket.obtenerPorId(req.params.id);
+
+        if (!ticket || ticket.id_usuario_creador !== req.usuario.id) {
+            return res.redirect('/colaborador/tickets');
+        }
+
+        const respuestas = await Respuesta.obtenerPorTicket(req.params.id);
+
+        res.render('colaborador/detalle-ticket', {
+            ticket,
+            respuestas,
+            usuario: req.usuario
+        });
+    } catch (error) {
+        console.error('Error al obtener detalle:', error.message);
+        res.redirect('/colaborador/tickets');
+    }
+};
+
+// Procesa el envio de un mensaje
+const enviarRespuesta = async (req, res) => {
+    const { contenido } = req.body;
+    const id_ticket = req.params.id;
+
+    if (!contenido || !contenido.trim()) {
+        return res.redirect(`/colaborador/tickets/${id_ticket}`);
+    }
+
+    try {
+        await Respuesta.crear({
+            id_ticket,
+            id_usuario:  req.usuario.id,
+            contenido:   contenido.trim(),
+            nombre_rol:  req.usuario.rol
+        });
+        res.redirect(`/colaborador/tickets/${id_ticket}`);
+    } catch (error) {
+        console.error('Error al enviar respuesta:', error.message);
+        res.redirect(`/colaborador/tickets/${id_ticket}`);
+    }
+};
+
+module.exports = { 
+    misTickets, mostrarNuevoTicket, crearTicket, 
+    detalleTicket, detalleTicketConMensajes, enviarRespuesta 
+};

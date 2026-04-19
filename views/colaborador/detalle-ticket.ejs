@@ -56,9 +56,32 @@
             </div>
         </div>
 
+        <!-- Seccion conversacion -->
         <div class="seccion-conversacion">
             <h3>Conversación</h3>
-            <p class="sin-datos">El historial de mensajes se cargará próximamente.</p>
+
+            <% if (respuestas.length === 0) { %>
+                <p class="sin-datos">Aún no hay mensajes en este ticket.</p>
+            <% } else { %>
+                <div class="lista-mensajes">
+                    <% respuestas.forEach(r => { %>
+                    <div class="mensaje mensaje-<%= r.nombre_rol === 'Técnico' ? 'tecnico' : 'colaborador' %>">
+                        <div class="mensaje-cabecera">
+                            <span class="mensaje-autor"><%= r.nombre %> <%= r.apellido %> — <%= r.nombre_rol %></span>
+                            <span class="mensaje-fecha"><%= new Date(r.fecha_respuesta).toLocaleString('es-CL') %></span>
+                        </div>
+                        <p class="mensaje-contenido"><%= r.contenido %></p>
+                    </div>
+                    <% }) %>
+                </div>
+            <% } %>
+
+            <% if (ticket.nombre_estado !== 'Cerrado') { %>
+            <form method="POST" action="/colaborador/tickets/<%= ticket.id_ticket %>/respuesta" class="formulario-mensaje">
+                <textarea name="contenido" rows="3" placeholder="Escribe tu mensaje..." required></textarea>
+                <button type="submit" class="btn-primario">Enviar mensaje</button>
+            </form>
+            <% } %>
         </div>
     </main>
 </body>
