@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar categoría — HelpDesk IntegralTI</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<body>
+    <nav class="navbar">
+        <span class="navbar-marca">HelpDesk IntegralTI</span>
+        <div class="navbar-links">
+            <a href="/tecnico/tickets">Todos los tickets</a>
+            <a href="/tecnico/categorias" class="activo">Categorías</a>
+            <a href="/tecnico/perfil">Mi perfil</a>
+            <a href="/logout">Cerrar sesión</a>
+        </div>
+        <span class="navbar-usuario"><%= usuario.nombre %> — Técnico</span>
+    </nav>
+
+    <main class="contenedor">
+        <div class="cabecera-seccion">
+            <h1>Editar categoría</h1>
+            <a href="/tecnico/categorias" class="btn-secundario">Volver</a>
+        </div>
+
+        <% if (error) { %>
+            <p class="error"><%= error %></p>
+        <% } %>
+
+        <form method="POST" action="/tecnico/categorias/<%= categoria.id_categoria %>/editar"
+            class="formulario">
+            <div class="campo">
+                <label for="nombre_categoria">Nombre *</label>
+                <input type="text" id="nombre_categoria" name="nombre_categoria"
+                    value="<%= categoria.nombre_categoria %>" required>
+            </div>
+            <div class="campo">
+                <label for="descripcion">Descripción</label>
+                <input type="text" id="descripcion" name="descripcion"
+                    value="<%= categoria.descripcion || '' %>">
+            </div>
+            <div class="acciones-formulario">
+                <a href="/tecnico/categorias" class="btn-secundario">Cancelar</a>
+                <button type="submit" class="btn-primario">Guardar cambios</button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>

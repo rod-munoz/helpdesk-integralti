@@ -19,4 +19,33 @@ const crear = async (datos) => {
     return resultado.insertId;
 };
 
-module.exports = { buscarPorEmail, crear };
+// Obtiene un usuario por ID
+const obtenerPorId = async (id_usuario) => {
+    const [filas] = await db.pool.execute(
+        `SELECT u.*, r.nombre_rol, d.nombre_departamento 
+        FROM usuarios u
+        JOIN roles r ON u.id_rol = r.id_rol
+        JOIN departamentos d ON u.id_departamento = d.id_departamento
+        WHERE u.id_usuario = ?`,
+        [id_usuario]
+    );
+    return filas[0];
+};
+
+// Actualiza datos personales
+const actualizar = async (id_usuario, nombre, apellido) => {
+    await db.pool.execute(
+        'UPDATE usuarios SET nombre = ?, apellido = ? WHERE id_usuario = ?',
+        [nombre, apellido, id_usuario]
+    );
+};
+
+// Actualiza la contraseña
+const actualizarPassword = async (id_usuario, password_hash) => {
+    await db.pool.execute(
+        'UPDATE usuarios SET password_hash = ? WHERE id_usuario = ?',
+        [password_hash, id_usuario]
+    );
+};
+
+module.exports = { buscarPorEmail, crear, obtenerPorId, actualizar, actualizarPassword };

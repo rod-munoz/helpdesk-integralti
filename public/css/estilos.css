@@ -211,3 +211,37 @@ button:hover { background: #2d2d5e; }
     margin-bottom: 0.5rem;
 }
 .formulario-mensaje textarea:focus { outline: none; border-color: #4a90e2; }
+
+/* Subtitulo de seccion */
+.subtitulo-seccion { font-size: 1rem; color: #1a1a2e; margin-bottom: 1rem; }
+
+/* Acciones en tabla */
+.acciones-tabla { display: flex; gap: 1rem; align-items: center; }
+.acciones-tabla a { color: #4a90e2; text-decoration: none; font-size: 0.9rem; }
+
+/* Boton tipo link */
+.btn-link {
+    background: none;
+    border: none;
+    color: #e53e3e;
+    cursor: pointer;
+    font-size: 0.9rem;
+    padding: 0;
+}
+.btn-link:hover { text-decoration: underline; }
+
+/* Perfil */
+.panel-perfil { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+.info-perfil { display: flex; flex-direction: column; gap: 0.6rem; margin-bottom: 1rem; }
+.info-perfil p { font-size: 0.9rem; color: #444; }
+.info-perfil .etiqueta { font-weight: bold; margin-right: 0.5rem; }
+
+/* Mensaje de exito */
+.exito {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 0.6rem 0.8rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
