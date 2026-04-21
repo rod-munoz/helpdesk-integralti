@@ -76,7 +76,7 @@
                 <!-- Cambiar prioridad -->
                 <div class="tarjeta-gestion">
                     <h3>Prioridad actual</h3>
-                    <span class="badge" style="background:<%= ticket.color %>20; color:<%= ticket.color %>">
+                    <span class="badge-<%= ticket.nombre_prioridad.toLowerCase() %>">
                         <%= ticket.nombre_prioridad %>
                     </span>
                     <form method="POST" action="/tecnico/tickets/<%= ticket.id_ticket %>/prioridad" style="margin-top:1rem">

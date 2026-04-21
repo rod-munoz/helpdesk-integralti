@@ -245,3 +245,27 @@ button:hover { background: #2d2d5e; }
     margin-bottom: 1rem;
     font-size: 0.9rem;
 }
+
+/* Aviso de cierre */
+.aviso-cierre {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background: #e8f5e9;
+    border-radius: 6px;
+    border-left: 4px solid #2e7d32;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+.aviso-cierre p { font-size: 0.9rem; color: #2e7d32; margin: 0; }
+
+/* Badges de prioridad por clase */
+.badge-alta   { background: #E53E3E20; color: #E53E3E; padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500; }
+.badge-media  { background: #D69E2E20; color: #D69E2E; padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500; }
+.badge-baja   { background: #38A16920; color: #38A169; padding: 0.25rem 0.7rem; border-radius: 20px; font-size: 0.8rem; font-weight: 500; }
+
+/* Bordes de prioridad para el formulario */
+.borde-alta   { border: 2px solid #E53E3E; color: #E53E3E; }
+.borde-media  { border: 2px solid #D69E2E; color: #D69E2E; }
+.borde-baja   { border: 2px solid #38A169; color: #38A169; }

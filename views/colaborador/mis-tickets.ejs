@@ -46,7 +46,7 @@
                         <td><%= ticket.titulo %></td>
                         <td><%= ticket.nombre_categoria %></td>
                         <td>
-                            <span class="badge" style="background:<%= ticket.color %>20; color:<%= ticket.color %>">
+                            <span class="badge-<%= ticket.nombre_prioridad.toLowerCase() %>">
                                 <%= ticket.nombre_prioridad %>
                             </span>
                         </td>

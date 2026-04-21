@@ -5,10 +5,11 @@ const { verificarSesion, soloColaborador } = require('../config/middleware');
 
 router.use(verificarSesion, soloColaborador);
 
-router.get('/tickets',                        colaboradorCtrl.misTickets);
-router.get('/tickets/nuevo',                  colaboradorCtrl.mostrarNuevoTicket);
-router.post('/tickets/nuevo',                 colaboradorCtrl.crearTicket);
-router.get('/tickets/:id',                    colaboradorCtrl.detalleTicketConMensajes);
-router.post('/tickets/:id/respuesta',         colaboradorCtrl.enviarRespuesta);
+router.get('/tickets', colaboradorCtrl.misTickets);
+router.get('/tickets/nuevo', colaboradorCtrl.mostrarNuevoTicket);
+router.post('/tickets/nuevo', colaboradorCtrl.crearTicket);
+router.get('/tickets/:id', colaboradorCtrl.detalleTicketConMensajes);
+router.post('/tickets/:id/respuesta', colaboradorCtrl.enviarRespuesta);
+router.post('/tickets/:id/cerrar', colaboradorCtrl.cerrarTicket);
 
 module.exports = router;

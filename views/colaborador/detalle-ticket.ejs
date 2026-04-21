@@ -36,7 +36,7 @@
                 </div>
                 <div class="dato">
                     <span class="etiqueta">Prioridad</span>
-                    <span class="badge" style="background:<%= ticket.color %>20; color:<%= ticket.color %>">
+                    <span class="badge-<%= ticket.nombre_prioridad.toLowerCase() %>">
                         <%= ticket.nombre_prioridad %>
                     </span>
                 </div>
@@ -50,10 +50,19 @@
                 </div>
             </div>
 
-            <div class="campo">
+            <div class="campo" style="margin-top:1rem">
                 <span class="etiqueta">Descripción</span>
                 <p class="descripcion-ticket"><%= ticket.descripcion %></p>
             </div>
+
+            <% if (ticket.nombre_estado === 'Resuelto') { %>
+            <div class="aviso-cierre">
+                <p>El técnico marcó este ticket como resuelto. ¿El problema fue solucionado?</p>
+                <form method="POST" action="/colaborador/tickets/<%= ticket.id_ticket %>/cerrar">
+                    <button type="submit" class="btn-primario">Confirmar y cerrar ticket</button>
+                </form>
+            </div>
+            <% } %>
         </div>
 
         <!-- Seccion conversacion -->

@@ -129,7 +129,19 @@ const enviarRespuesta = async (req, res) => {
     }
 };
 
+// Cierra un ticket que está en estado Resuelto
+const cerrarTicket = async (req, res) => {
+    try {
+        await Ticket.cerrar(req.params.id, req.usuario.id);
+        res.redirect(`/colaborador/tickets/${req.params.id}`);
+    } catch (error) {
+        console.error('Error al cerrar ticket:', error.message);
+        res.redirect(`/colaborador/tickets/${req.params.id}`);
+    }
+};
+
 module.exports = { 
     misTickets, mostrarNuevoTicket, crearTicket, 
-    detalleTicket, detalleTicketConMensajes, enviarRespuesta 
+    detalleTicket, detalleTicketConMensajes, 
+    enviarRespuesta, cerrarTicket
 };

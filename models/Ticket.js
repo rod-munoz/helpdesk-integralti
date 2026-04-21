@@ -141,9 +141,18 @@ const obtenerResumen = async () => {
     return filas;
 };
 
+// Cierra un ticket (solo si está en estado Resuelto)
+const cerrar = async (id_ticket, id_usuario_creador) => {
+    await db.pool.execute(
+        `UPDATE tickets SET id_estado = 4, fecha_cierre = NOW() 
+        WHERE id_ticket = ? AND id_usuario_creador = ? AND id_estado = 3`,
+        [id_ticket, id_usuario_creador]
+    );
+};
+
 module.exports = { 
     obtenerPorUsuario, obtenerPorId, crear, 
     obtenerCategorias, obtenerPrioridades,
     obtenerTodos, cambiarEstado, cambiarPrioridad, 
-    obtenerEstados, obtenerResumen
+    obtenerEstados, obtenerResumen, cerrar
 };
