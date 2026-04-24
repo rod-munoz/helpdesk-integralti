@@ -28,6 +28,7 @@ app.use('/tecnico', require('./routes/tecnico'));
 app.use('/tecnico/categorias', require('./routes/categorias'));
 app.use('/colaborador/perfil', require('./routes/perfil'));
 app.use('/tecnico/perfil', require('./routes/perfil'));
+app.use('/tecnico/usuarios', require('./routes/usuarios'));
 
 // Ruta raíz redirige al login
 app.get('/', (req, res) => res.redirect('/login'));

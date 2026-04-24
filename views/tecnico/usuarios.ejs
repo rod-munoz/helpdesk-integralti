@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Usuarios — HelpDesk IntegralTI</title>
+    <link rel="stylesheet" href="/css/estilos.css">
+</head>
+<script>
+    function toggleSidebar() {
+        document.querySelector('.sidebar-links').classList.toggle('abierto');
+    }
+</script>
+<body>
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="sidebar-marca">
+            <h1>HelpDesk IntegralTI</h1>
+            <span>Panel técnico</span>
+        </div>
+        <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="sidebar-links">
+            <a href="/tecnico/tickets">Todos los tickets</a>
+            <a href="/tecnico/usuarios" class="activo">Usuarios</a>
+            <a href="/tecnico/categorias">Categorías</a>
+            <a href="/tecnico/perfil">Mi perfil</a>
+            <a href="/logout">Cerrar sesión</a>
+        </nav>
+        <div class="sidebar-usuario">
+            <strong><%= usuario.nombre %> <%= usuario.apellido %></strong>
+            Técnico
+        </div>
+    </aside>
+
+    <div class="contenido-principal">
+        <main class="contenedor">
+            <h1 class="titulo-seccion">Gestión de usuarios</h1>
+
+            <% if (error) { %>
+                <p class="error"><%= error %></p>
+            <% } %>
+            <% if (exito) { %>
+                <p class="exito"><%= exito %></p>
+            <% } %>
+
+            <h2 class="subtitulo-seccion">Nuevo usuario</h2>
+            <form method="POST" action="/tecnico/usuarios" class="formulario">
+                <div class="fila-campos">
+                    <div class="campo">
+                        <label for="nombre">Nombre *</label>
+                        <input type="text" id="nombre" name="nombre" required
+                            placeholder="Nombre de pila">
+                    </div>
+                    <div class="campo">
+                        <label for="apellido">Apellido *</label>
+                        <input type="text" id="apellido" name="apellido" required
+                            placeholder="Apellido paterno">
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <label for="email">Correo electrónico *</label>
+                    <input type="email" id="email" name="email" required
+                        placeholder="correo@integralti.cl">
+                </div>
+
+                <div class="campo">
+                    <label for="password">Contraseña *</label>
+                    <input type="password" id="password" name="password" required
+                        placeholder="Mínimo 6 caracteres">
+                </div>
+
+                <div class="campo">
+                    <label for="confirmar">Confirmar contraseña *</label>
+                    <input type="password" id="confirmar" name="confirmar" required
+                        placeholder="Repite la contraseña">
+                </div>
+
+                <div class="fila-campos">
+                    <div class="campo">
+                        <label for="id_rol">Perfil *</label>
+                        <select id="id_rol" name="id_rol" required>
+                            <option value="">Seleccione un perfil</option>
+                            <% roles.forEach(r => { %>
+                                <option value="<%= r.id_rol %>"><%= r.nombre_rol %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    <div class="campo">
+                        <label for="id_departamento">Departamento *</label>
+                        <select id="id_departamento" name="id_departamento" required>
+                            <option value="">Seleccione un departamento</option>
+                            <% departamentos.forEach(d => { %>
+                                <option value="<%= d.id_departamento %>">
+                                    <%= d.nombre_departamento %>
+                                </option>
+                            <% }) %>
+                        </select>
+                    </div>
+                </div>
+
+                <p class="nota">* Campos obligatorios</p>
+                <div class="acciones-formulario">
+                    <button type="submit" class="btn-primario">Crear usuario</button>
+                </div>
+            </form>
+
+            <h2 class="subtitulo-seccion" style="margin-top:2rem">Usuarios registrados</h2>
+            <div class="tabla-wrapper">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Perfil</th>
+                        <th>Departamento</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% usuarios.forEach(u => { %>
+                    <tr>
+                        <td><%= u.nombre %> <%= u.apellido %></td>
+                        <td><%= u.email %></td>
+                        <td><%= u.nombre_rol %></td>
+                        <td><%= u.nombre_departamento %></td>
+                        <td>
+                            <span class="estado <%= u.activo ? 'estado-abierto' : 'estado-cerrado' %>">
+                                <%= u.activo ? 'Activo' : 'Inactivo' %>
+                            </span>
+                        </td>
+                        <td>
+                            <form method="POST"
+                                action="/tecnico/usuarios/<%= u.id_usuario %>/estado"
+                                style="display:inline">
+                                <button type="submit" class="btn-link">
+                                    <%= u.activo ? 'Desactivar' : 'Activar' %>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+            </div>
+        </main>
+    </div>
+
+</div>
+</body>
+</html>
