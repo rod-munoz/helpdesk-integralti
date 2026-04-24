@@ -32,9 +32,10 @@ const procesarLogin = async (req, res) => {
         // Crear token JWT con datos del usuario
         const token = jwt.sign(
             {
-                id: usuario.id_usuario,
-                nombre: usuario.nombre,
-                rol: usuario.nombre_rol
+                id:       usuario.id_usuario,
+                nombre:   usuario.nombre,
+                apellido: usuario.apellido,
+                rol:      usuario.nombre_rol
             },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRES_IN }

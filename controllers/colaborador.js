@@ -3,14 +3,43 @@ const Ticket = require('../models/Ticket');
 // Muestra el listado de tickets del colaborador
 const misTickets = async (req, res) => {
     try {
-        const tickets = await Ticket.obtenerPorUsuario(req.usuario.id);
+        const filtro = req.query.estado || null;
+
+        let consulta = `
+            SELECT t.*, 
+                e.nombre_estado, 
+                p.nombre_prioridad,
+                c.nombre_categoria
+            FROM tickets t
+            JOIN estados e ON t.id_estado = e.id_estado
+            JOIN prioridades p ON t.id_prioridad = p.id_prioridad
+            JOIN categorias c ON t.id_categoria = c.id_categoria
+            WHERE t.id_usuario_creador = ?
+        `;
+        const parametros = [req.usuario.id];
+
+        if (filtro) {
+            consulta += ' AND t.id_estado = ?';
+            parametros.push(filtro);
+        }
+
+        consulta += ' ORDER BY t.fecha_creacion DESC';
+
+        const db = require('../config/basedatos');
+        const [tickets] = await db.pool.execute(consulta, parametros);
+        const estados = await require('../models/Ticket').obtenerEstados();
+
         res.render('colaborador/mis-tickets', {
             tickets,
+            estados,
+            filtro: req.query.estado || '',
             usuario: req.usuario
         });
     } catch (error) {
         console.error('Error al obtener tickets:', error.message);
-        res.render('colaborador/mis-tickets', { tickets: [], usuario: req.usuario });
+        res.render('colaborador/mis-tickets', {
+            tickets: [], estados: [], filtro: '', usuario: req.usuario
+        });
     }
 };
 

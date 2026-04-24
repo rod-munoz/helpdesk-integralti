@@ -6,124 +6,138 @@
     <title>Ticket #<%= ticket.id_ticket %> — HelpDesk IntegralTI</title>
     <link rel="stylesheet" href="/css/estilos.css">
 </head>
+<script>
+    function toggleSidebar() {
+        document.querySelector('.sidebar-links').classList.toggle('abierto');
+    }
+</script>
 <body>
-    <nav class="navbar">
-        <span class="navbar-marca">HelpDesk IntegralTI</span>
-        <div class="navbar-links">
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="sidebar-marca">
+            <h1>HelpDesk IntegralTI</h1>
+            <span>Panel técnico</span>
+        </div>
+        <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="sidebar-links">
             <a href="/tecnico/tickets" class="activo">Todos los tickets</a>
             <a href="/tecnico/categorias">Categorías</a>
             <a href="/tecnico/perfil">Mi perfil</a>
             <a href="/logout">Cerrar sesión</a>
+        </nav>
+        <div class="sidebar-usuario">
+            <strong><%= usuario.nombre %> <%= usuario.apellido %></strong>
+            Técnico
         </div>
-        <span class="navbar-usuario"><%= usuario.nombre %> — Técnico</span>
-    </nav>
+    </aside>
 
-    <main class="contenedor">
-        <div class="cabecera-seccion">
-            <h1>Ticket #<%= ticket.id_ticket %></h1>
-            <a href="/tecnico/tickets" class="btn-secundario">Volver</a>
-        </div>
-
-        <div class="panel-detalle">
-
-            <!-- Informacion del ticket -->
-            <div class="tarjeta-detalle">
-                <h2><%= ticket.titulo %></h2>
-                <div class="fila-campos">
-                    <div class="dato">
-                        <span class="etiqueta">Colaborador</span>
-                        <span><%= ticket.nombre_creador %> <%= ticket.apellido_creador %></span>
-                    </div>
-                    <div class="dato">
-                        <span class="etiqueta">Categoría</span>
-                        <span><%= ticket.nombre_categoria %></span>
-                    </div>
-                    <div class="dato">
-                        <span class="etiqueta">Fecha</span>
-                        <span><%= new Date(ticket.fecha_creacion).toLocaleDateString('es-CL') %></span>
-                    </div>
-                </div>
-                <div class="campo" style="margin-top:1rem">
-                    <span class="etiqueta">Descripción</span>
-                    <p class="descripcion-ticket"><%= ticket.descripcion %></p>
-                </div>
+    <div class="contenido-principal">
+        <main class="contenedor">
+            <div class="cabecera-seccion">
+                <h1>Ticket #<%= ticket.id_ticket %></h1>
+                <a href="/tecnico/tickets" class="btn-secundario">Volver</a>
             </div>
 
-            <!-- Panel de gestion -->
-            <div class="panel-gestion">
-
-                <!-- Cambiar estado -->
-                <div class="tarjeta-gestion">
-                    <h3>Estado actual</h3>
-                    <span class="estado estado-<%= ticket.nombre_estado.toLowerCase().replace(' ', '-') %>">
-                        <%= ticket.nombre_estado %>
-                    </span>
-                    <form method="POST" action="/tecnico/tickets/<%= ticket.id_ticket %>/estado" style="margin-top:1rem">
-                        <select name="id_estado" class="select-gestion">
-                            <% estados.forEach(e => { %>
-                                <option value="<%= e.id_estado %>"
-                                    <%= ticket.id_estado == e.id_estado ? 'selected' : '' %>>
-                                    <%= e.nombre_estado %>
-                                </option>
-                            <% }) %>
-                        </select>
-                        <button type="submit" class="btn-primario" style="width:100%;margin-top:0.5rem">
-                            Actualizar estado
-                        </button>
-                    </form>
-                </div>
-
-                <!-- Cambiar prioridad -->
-                <div class="tarjeta-gestion">
-                    <h3>Prioridad actual</h3>
-                    <span class="badge-<%= ticket.nombre_prioridad.toLowerCase() %>">
-                        <%= ticket.nombre_prioridad %>
-                    </span>
-                    <form method="POST" action="/tecnico/tickets/<%= ticket.id_ticket %>/prioridad" style="margin-top:1rem">
-                        <select name="id_prioridad" class="select-gestion">
-                            <% prioridades.forEach(p => { %>
-                                <option value="<%= p.id_prioridad %>"
-                                    <%= ticket.id_prioridad == p.id_prioridad ? 'selected' : '' %>>
-                                    <%= p.nombre_prioridad %>
-                                </option>
-                            <% }) %>
-                        </select>
-                        <button type="submit" class="btn-primario" style="width:100%;margin-top:0.5rem">
-                            Actualizar prioridad
-                        </button>
-                    </form>
-                </div>
-
-            </div>
-        </div>
-
-        <!-- Seccion conversacion -->
-        <div class="seccion-conversacion">
-            <h3>Conversación</h3>
-
-            <% if (respuestas.length === 0) { %>
-                <p class="sin-datos">Aún no hay mensajes en este ticket.</p>
-            <% } else { %>
-                <div class="lista-mensajes">
-                    <% respuestas.forEach(r => { %>
-                    <div class="mensaje mensaje-<%= r.nombre_rol === 'Técnico' ? 'tecnico' : 'colaborador' %>">
-                        <div class="mensaje-cabecera">
-                            <span class="mensaje-autor"><%= r.nombre %> <%= r.apellido %> — <%= r.nombre_rol %></span>
-                            <span class="mensaje-fecha"><%= new Date(r.fecha_respuesta).toLocaleString('es-CL') %></span>
+            <div class="panel-detalle">
+                <div class="tarjeta-detalle">
+                    <h2><%= ticket.titulo %></h2>
+                    <div class="fila-campos">
+                        <div class="dato">
+                            <span class="etiqueta">Colaborador</span>
+                            <span class="valor"><%= ticket.nombre_creador %> <%= ticket.apellido_creador %></span>
                         </div>
-                        <p class="mensaje-contenido"><%= r.contenido %></p>
+                        <div class="dato">
+                            <span class="etiqueta">Categoría</span>
+                            <span class="valor"><%= ticket.nombre_categoria %></span>
+                        </div>
+                        <div class="dato">
+                            <span class="etiqueta">Fecha</span>
+                            <span class="valor"><%= new Date(ticket.fecha_creacion).toLocaleDateString('es-CL') %></span>
+                        </div>
                     </div>
-                    <% }) %>
+                    <div class="campo" style="margin-top:1rem">
+                        <span class="etiqueta">Descripción</span>
+                        <p class="descripcion-ticket"><%= ticket.descripcion %></p>
+                    </div>
                 </div>
-            <% } %>
 
-            <% if (ticket.nombre_estado !== 'Cerrado') { %>
-            <form method="POST" action="/tecnico/tickets/<%= ticket.id_ticket %>/respuesta" class="formulario-mensaje">
-                <textarea name="contenido" rows="3" placeholder="Escribe tu mensaje..." required></textarea>
-                <button type="submit" class="btn-primario">Enviar mensaje</button>
-            </form>
-            <% } %>
-        </div>
-    </main>
+                <div class="panel-gestion">
+                    <div class="tarjeta-gestion">
+                        <h3>Estado actual</h3>
+                        <span class="estado estado-<%= ticket.nombre_estado.toLowerCase().replace(' ', '-') %>">
+                            <%= ticket.nombre_estado %>
+                        </span>
+                        <form method="POST" action="/tecnico/tickets/<%= ticket.id_ticket %>/estado" style="margin-top:1rem">
+                            <select name="id_estado" class="select-gestion">
+                                <% estados.forEach(e => { %>
+                                    <option value="<%= e.id_estado %>"
+                                        <%= ticket.id_estado == e.id_estado ? 'selected' : '' %>>
+                                        <%= e.nombre_estado %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                            <button type="submit" class="btn-secundario">
+                                Actualizar estado
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="tarjeta-gestion">
+                        <h3>Prioridad actual</h3>
+                        <span class="badge-<%= ticket.nombre_prioridad.toLowerCase() %>">
+                            <%= ticket.nombre_prioridad %>
+                        </span>
+                        <form method="POST" action="/tecnico/tickets/<%= ticket.id_ticket %>/prioridad" style="margin-top:1rem">
+                            <select name="id_prioridad" class="select-gestion">
+                                <% prioridades.forEach(p => { %>
+                                    <option value="<%= p.id_prioridad %>"
+                                        <%= ticket.id_prioridad == p.id_prioridad ? 'selected' : '' %>>
+                                        <%= p.nombre_prioridad %>
+                                    </option>
+                                <% }) %>
+                            </select>
+                            <button type="submit" class="btn-secundario">
+                                Actualizar prioridad
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="seccion-conversacion">
+                <h3>Conversación</h3>
+
+                <% if (respuestas.length === 0) { %>
+                    <p class="sin-datos">Aún no hay mensajes en este ticket.</p>
+                <% } else { %>
+                    <div class="lista-mensajes">
+                        <% respuestas.forEach(r => { %>
+                        <div class="mensaje mensaje-<%= r.nombre_rol === 'Técnico' ? 'tecnico' : 'colaborador' %>">
+                            <div class="mensaje-cabecera">
+                                <span class="mensaje-autor"><%= r.nombre %> <%= r.apellido %> — <%= r.nombre_rol %></span>
+                                <span class="mensaje-fecha"><%= new Date(r.fecha_respuesta).toLocaleString('es-CL') %></span>
+                            </div>
+                            <p class="mensaje-contenido"><%= r.contenido %></p>
+                        </div>
+                        <% }) %>
+                    </div>
+                <% } %>
+
+                <% if (ticket.nombre_estado !== 'Cerrado') { %>
+                <form method="POST" action="/tecnico/tickets/<%= ticket.id_ticket %>/respuesta" class="formulario-mensaje">
+                    <textarea name="contenido" rows="3" placeholder="Escribe tu mensaje..." required></textarea>
+                    <div class="acciones-formulario">
+                        <button type="submit" class="btn-primario">Enviar mensaje</button>
+                    </div>
+                </form>
+                <% } %>
+            </div>
+        </main>
+    </div>
+
+</div>
 </body>
 </html>

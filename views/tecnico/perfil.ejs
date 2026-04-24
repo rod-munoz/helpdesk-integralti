@@ -6,76 +6,97 @@
     <title>Mi perfil — HelpDesk IntegralTI</title>
     <link rel="stylesheet" href="/css/estilos.css">
 </head>
+<script>
+    function toggleSidebar() {
+        document.querySelector('.sidebar-links').classList.toggle('abierto');
+    }
+</script>
 <body>
-    <nav class="navbar">
-        <span class="navbar-marca">HelpDesk IntegralTI</span>
-        <div class="navbar-links">
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="sidebar-marca">
+            <h1>HelpDesk IntegralTI</h1>
+            <span>Panel técnico</span>
+        </div>
+        <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="sidebar-links">
             <a href="/tecnico/tickets">Todos los tickets</a>
             <a href="/tecnico/categorias">Categorías</a>
             <a href="/tecnico/perfil" class="activo">Mi perfil</a>
             <a href="/logout">Cerrar sesión</a>
+        </nav>
+        <div class="sidebar-usuario">
+            <strong><%= usuario.nombre %> <%= usuario.apellido %></strong>
+            Técnico
         </div>
-        <span class="navbar-usuario"><%= usuario.nombre %> — Técnico</span>
-    </nav>
+    </aside>
 
-    <main class="contenedor">
-        <h1 class="titulo-seccion">Mi perfil</h1>
+    <div class="contenido-principal">
+        <main class="contenedor">
+            <h1 class="titulo-seccion">Mi perfil</h1>
 
-        <% if (error) { %>
-            <p class="error"><%= error %></p>
-        <% } %>
-        <% if (exito) { %>
-            <p class="exito"><%= exito %></p>
-        <% } %>
+            <% if (error) { %>
+                <p class="error"><%= error %></p>
+            <% } %>
+            <% if (exito) { %>
+                <p class="exito"><%= exito %></p>
+            <% } %>
 
-        <div class="panel-perfil">
-
-            <!-- Datos personales -->
-            <div class="tarjeta-detalle">
-                <h2 class="subtitulo-seccion">Datos personales</h2>
-                <div class="info-perfil">
-                    <p><span class="etiqueta">Email</span> <%= usuario.email %></p>
-                    <p><span class="etiqueta">Rol</span> <%= usuario.nombre_rol %></p>
-                    <p><span class="etiqueta">Departamento</span> <%= usuario.nombre_departamento %></p>
+            <div class="panel-perfil">
+                <div class="tarjeta-detalle">
+                    <h2 class="subtitulo-seccion">Datos personales</h2>
+                    <div class="info-perfil">
+                        <p><span class="etiqueta">Email</span> <%= usuario.email %></p>
+                        <p><span class="etiqueta">Rol</span> <%= usuario.nombre_rol %></p>
+                        <p><span class="etiqueta">Departamento</span> <%= usuario.nombre_departamento %></p>
+                    </div>
+                    <form method="POST" action="/tecnico/perfil/datos" class="formulario" style="margin-top:1.5rem">
+                        <div class="fila-campos">
+                            <div class="campo">
+                                <label for="nombre">Nombre</label>
+                                <input type="text" id="nombre" name="nombre"
+                                    value="<%= usuario.nombre %>" required>
+                            </div>
+                            <div class="campo">
+                                <label for="apellido">Apellido</label>
+                                <input type="text" id="apellido" name="apellido"
+                                    value="<%= usuario.apellido %>" required>
+                            </div>
+                        </div>
+                        <div class="acciones-formulario">
+                            <button type="submit" class="btn-primario">Guardar cambios</button>
+                        </div>
+                    </form>
                 </div>
-                <form method="POST" action="/tecnico/perfil/datos" class="formulario" style="margin-top:1.5rem">
-                    <div class="fila-campos">
+
+                <div class="tarjeta-detalle">
+                    <h2 class="subtitulo-seccion">Cambiar contraseña</h2>
+                    <form method="POST" action="/tecnico/perfil/password" class="formulario">
                         <div class="campo">
-                            <label for="nombre">Nombre</label>
-                            <input type="text" id="nombre" name="nombre" 
-                                value="<%= usuario.nombre %>" required>
+                            <label for="password_actual">Contraseña actual</label>
+                            <input type="password" id="password_actual" name="password_actual" required>
                         </div>
                         <div class="campo">
-                            <label for="apellido">Apellido</label>
-                            <input type="text" id="apellido" name="apellido" 
-                                value="<%= usuario.apellido %>" required>
+                            <label for="password_nuevo">Nueva contraseña</label>
+                            <input type="password" id="password_nuevo" name="password_nuevo" required>
                         </div>
-                    </div>
-                    <button type="submit" class="btn-primario">Guardar cambios</button>
-                </form>
+                        <div class="campo">
+                            <label for="password_confirmar">Confirmar nueva contraseña</label>
+                            <input type="password" id="password_confirmar" name="password_confirmar" required>
+                        </div>
+                        <div class="acciones-formulario">
+                            <button type="submit" class="btn-primario">Cambiar contraseña</button>
+                        </div>
+                    </form>
+                </div>
+                
             </div>
+        </main>
+    </div>
 
-            <!-- Cambiar contraseña -->
-            <div class="tarjeta-detalle">
-                <h2 class="subtitulo-seccion">Cambiar contraseña</h2>
-                <form method="POST" action="/tecnico/perfil/password" class="formulario">
-                    <div class="campo">
-                        <label for="password_actual">Contraseña actual</label>
-                        <input type="password" id="password_actual" name="password_actual" required>
-                    </div>
-                    <div class="campo">
-                        <label for="password_nuevo">Nueva contraseña</label>
-                        <input type="password" id="password_nuevo" name="password_nuevo" required>
-                    </div>
-                    <div class="campo">
-                        <label for="password_confirmar">Confirmar nueva contraseña</label>
-                        <input type="password" id="password_confirmar" name="password_confirmar" required>
-                    </div>
-                    <button type="submit" class="btn-primario">Cambiar contraseña</button>
-                </form>
-            </div>
-
-        </div>
-    </main>
+</div>
 </body>
 </html>

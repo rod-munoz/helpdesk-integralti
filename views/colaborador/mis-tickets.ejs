@@ -6,58 +6,97 @@
     <title>Mis tickets — HelpDesk IntegralTI</title>
     <link rel="stylesheet" href="/css/estilos.css">
 </head>
+<script>
+    function toggleSidebar() {
+        document.querySelector('.sidebar-links').classList.toggle('abierto');
+    }
+</script>
 <body>
-    <nav class="navbar">
-        <span class="navbar-marca">HelpDesk IntegralTI</span>
-        <div class="navbar-links">
+<div class="layout">
+
+    <aside class="sidebar sidebar-colaborador">
+        <div class="sidebar-marca">
+            <h1>HelpDesk IntegralTI</h1>
+            <span>Panel colaborador</span>
+        </div>
+        <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="sidebar-links">
             <a href="/colaborador/tickets" class="activo">Mis tickets</a>
             <a href="/colaborador/tickets/nuevo">Nuevo ticket</a>
             <a href="/colaborador/perfil">Mi perfil</a>
             <a href="/logout">Cerrar sesión</a>
+        </nav>
+        <div class="sidebar-usuario">
+            <strong><%= usuario.nombre %> <%= usuario.apellido %></strong>
+            Colaborador
         </div>
-        <span class="navbar-usuario"><%= usuario.nombre %></span>
-    </nav>
+    </aside>
 
-    <main class="contenedor">
-        <div class="cabecera-seccion">
-            <h1>Mis tickets</h1>
-            <a href="/colaborador/tickets/nuevo" class="btn-primario">+ Nuevo ticket</a>
-        </div>
+    <div class="contenido-principal">
+        <main class="contenedor">
+            <div class="cabecera-seccion">
+                <h1>Mis tickets</h1>
+                <a href="/colaborador/tickets/nuevo" class="btn-primario">+ Nuevo ticket</a>
+            </div>
 
-        <% if (tickets.length === 0) { %>
-            <p class="sin-datos">No tienes tickets registrados aún.</p>
-        <% } else { %>
-            <table class="tabla">
-                <thead>
-                    <tr>
-                        <th>#</th>
-                        <th>Título</th>
-                        <th>Categoría</th>
-                        <th>Prioridad</th>
-                        <th>Estado</th>
-                        <th>Fecha</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% tickets.forEach(ticket => { %>
-                    <tr>
-                        <td>#<%= ticket.id_ticket %></td>
-                        <td><%= ticket.titulo %></td>
-                        <td><%= ticket.nombre_categoria %></td>
-                        <td>
-                            <span class="badge-<%= ticket.nombre_prioridad.toLowerCase() %>">
-                                <%= ticket.nombre_prioridad %>
-                            </span>
-                        </td>
-                        <td><span class="estado estado-<%= ticket.nombre_estado.toLowerCase().replace(' ', '-') %>"><%= ticket.nombre_estado %></span></td>
-                        <td><%= new Date(ticket.fecha_creacion).toLocaleDateString('es-CL') %></td>
-                        <td><a href="/colaborador/tickets/<%= ticket.id_ticket %>">Ver</a></td>
-                    </tr>
-                    <% }) %>
-                </tbody>
-            </table>
-        <% } %>
-    </main>
+            <% if (tickets.length === 0) { %>
+                <p class="sin-datos">No tienes tickets registrados aún.</p>
+            <% } else { %>
+                <form method="GET" action="/colaborador/tickets" class="filtros">
+                    <select name="estado">
+                        <option value="">Todos los estados</option>
+                        <% estados.forEach(e => { %>
+                            <option value="<%= e.id_estado %>"
+                                <%= filtro == e.id_estado ? 'selected' : '' %>>
+                                <%= e.nombre_estado %>
+                            </option>
+                        <% }) %>
+                    </select>
+                    <button type="submit" class="btn-primario">Filtrar</button>
+                    <a href="/colaborador/tickets" class="btn-primario">Limpiar</a>
+                </form>
+                <div class="tabla-wrapper">
+                <table class="tabla">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Título</th>
+                            <th>Categoría</th>
+                            <th>Prioridad</th>
+                            <th>Estado</th>
+                            <th>Fecha</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% tickets.forEach(ticket => { %>
+                        <tr>
+                            <td>#<%= ticket.id_ticket %></td>
+                            <td><%= ticket.titulo %></td>
+                            <td><%= ticket.nombre_categoria %></td>
+                            <td>
+                                <span class="badge-<%= ticket.nombre_prioridad.toLowerCase() %>">
+                                    <%= ticket.nombre_prioridad %>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="estado estado-<%= ticket.nombre_estado.toLowerCase().replace(' ', '-') %>">
+                                    <%= ticket.nombre_estado %>
+                                </span>
+                            </td>
+                            <td><%= new Date(ticket.fecha_creacion).toLocaleDateString('es-CL') %></td>
+                            <td><a href="/colaborador/tickets/<%= ticket.id_ticket %>">Ver</a></td>
+                        </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+                </div>
+            <% } %>
+        </main>
+    </div>
+
+</div>
 </body>
 </html>

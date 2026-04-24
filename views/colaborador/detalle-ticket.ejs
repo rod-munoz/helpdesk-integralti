@@ -6,92 +6,113 @@
     <title>Ticket #<%= ticket.id_ticket %> — HelpDesk IntegralTI</title>
     <link rel="stylesheet" href="/css/estilos.css">
 </head>
+<script>
+    function toggleSidebar() {
+        document.querySelector('.sidebar-links').classList.toggle('abierto');
+    }
+</script>
 <body>
-    <nav class="navbar">
-        <span class="navbar-marca">HelpDesk IntegralTI</span>
-        <div class="navbar-links">
+<div class="layout">
+
+    <aside class="sidebar sidebar-colaborador">
+        <div class="sidebar-marca">
+            <h1>HelpDesk IntegralTI</h1>
+            <span>Panel colaborador</span>
+        </div>
+        <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="sidebar-links">
             <a href="/colaborador/tickets" class="activo">Mis tickets</a>
             <a href="/colaborador/tickets/nuevo">Nuevo ticket</a>
             <a href="/colaborador/perfil">Mi perfil</a>
             <a href="/logout">Cerrar sesión</a>
+        </nav>
+        <div class="sidebar-usuario">
+            <strong><%= usuario.nombre %> <%= usuario.apellido %></strong>
+            Colaborador
         </div>
-        <span class="navbar-usuario"><%= usuario.nombre %></span>
-    </nav>
+    </aside>
 
-    <main class="contenedor">
-        <div class="cabecera-seccion">
-            <h1>Ticket #<%= ticket.id_ticket %></h1>
-            <a href="/colaborador/tickets" class="btn-secundario">Volver</a>
-        </div>
-
-        <div class="tarjeta-detalle">
-            <h2><%= ticket.titulo %></h2>
-
-            <div class="fila-campos">
-                <div class="dato">
-                    <span class="etiqueta">Estado</span>
-                    <span class="estado estado-<%= ticket.nombre_estado.toLowerCase().replace(' ', '-') %>">
-                        <%= ticket.nombre_estado %>
-                    </span>
-                </div>
-                <div class="dato">
-                    <span class="etiqueta">Prioridad</span>
-                    <span class="badge-<%= ticket.nombre_prioridad.toLowerCase() %>">
-                        <%= ticket.nombre_prioridad %>
-                    </span>
-                </div>
-                <div class="dato">
-                    <span class="etiqueta">Categoría</span>
-                    <span><%= ticket.nombre_categoria %></span>
-                </div>
-                <div class="dato">
-                    <span class="etiqueta">Fecha</span>
-                    <span><%= new Date(ticket.fecha_creacion).toLocaleDateString('es-CL') %></span>
-                </div>
+    <div class="contenido-principal">
+        <main class="contenedor">
+            <div class="cabecera-seccion">
+                <h1>Ticket #<%= ticket.id_ticket %></h1>
+                <a href="/colaborador/tickets" class="btn-primario">Volver</a>
             </div>
 
-            <div class="campo" style="margin-top:1rem">
-                <span class="etiqueta">Descripción</span>
-                <p class="descripcion-ticket"><%= ticket.descripcion %></p>
-            </div>
+            <div class="tarjeta-detalle">
+                <h2><%= ticket.titulo %></h2>
 
-            <% if (ticket.nombre_estado === 'Resuelto') { %>
-            <div class="aviso-cierre">
-                <p>El técnico marcó este ticket como resuelto. ¿El problema fue solucionado?</p>
-                <form method="POST" action="/colaborador/tickets/<%= ticket.id_ticket %>/cerrar">
-                    <button type="submit" class="btn-primario">Confirmar y cerrar ticket</button>
-                </form>
-            </div>
-            <% } %>
-        </div>
-
-        <!-- Seccion conversacion -->
-        <div class="seccion-conversacion">
-            <h3>Conversación</h3>
-
-            <% if (respuestas.length === 0) { %>
-                <p class="sin-datos">Aún no hay mensajes en este ticket.</p>
-            <% } else { %>
-                <div class="lista-mensajes">
-                    <% respuestas.forEach(r => { %>
-                    <div class="mensaje mensaje-<%= r.nombre_rol === 'Técnico' ? 'tecnico' : 'colaborador' %>">
-                        <div class="mensaje-cabecera">
-                            <span class="mensaje-autor"><%= r.nombre %> <%= r.apellido %> — <%= r.nombre_rol %></span>
-                            <span class="mensaje-fecha"><%= new Date(r.fecha_respuesta).toLocaleString('es-CL') %></span>
-                        </div>
-                        <p class="mensaje-contenido"><%= r.contenido %></p>
+                <div class="fila-campos">
+                    <div class="dato">
+                        <span class="etiqueta">Estado</span>
+                        <span class="estado estado-<%= ticket.nombre_estado.toLowerCase().replace(' ', '-') %>">
+                            <%= ticket.nombre_estado %>
+                        </span>
                     </div>
-                    <% }) %>
+                    <div class="dato">
+                        <span class="etiqueta">Prioridad</span>
+                        <span class="badge-<%= ticket.nombre_prioridad.toLowerCase() %>">
+                            <%= ticket.nombre_prioridad %>
+                        </span>
+                    </div>
+                    <div class="dato">
+                        <span class="etiqueta">Categoría</span>
+                        <span class="valor"><%= ticket.nombre_categoria %></span>
+                    </div>
+                    <div class="dato">
+                        <span class="etiqueta">Fecha</span>
+                        <span class="valor"><%= new Date(ticket.fecha_creacion).toLocaleDateString('es-CL') %></span>
+                    </div>
                 </div>
-            <% } %>
 
-            <% if (ticket.nombre_estado !== 'Cerrado') { %>
-            <form method="POST" action="/colaborador/tickets/<%= ticket.id_ticket %>/respuesta" class="formulario-mensaje">
-                <textarea name="contenido" rows="3" placeholder="Escribe tu mensaje..." required></textarea>
-                <button type="submit" class="btn-primario">Enviar mensaje</button>
-            </form>
-            <% } %>
-        </div>
-    </main>
+                <div class="campo" style="margin-top:1rem">
+                    <span class="etiqueta">Descripción</span>
+                    <p class="descripcion-ticket"><%= ticket.descripcion %></p>
+                </div>
+
+                <% if (ticket.nombre_estado === 'Resuelto') { %>
+                <div class="aviso-cierre">
+                    <p>El técnico marcó este ticket como resuelto. ¿El problema fue solucionado?</p>
+                    <form method="POST" action="/colaborador/tickets/<%= ticket.id_ticket %>/cerrar">
+                        <button type="submit" class="btn-primario">Confirmar y cerrar ticket</button>
+                    </form>
+                </div>
+                <% } %>
+            </div>
+
+            <div class="seccion-conversacion">
+                <h3>Conversación</h3>
+
+                <% if (respuestas.length === 0) { %>
+                    <p class="sin-datos">Aún no hay mensajes en este ticket.</p>
+                <% } else { %>
+                    <div class="lista-mensajes">
+                        <% respuestas.forEach(r => { %>
+                        <div class="mensaje mensaje-<%= r.nombre_rol === 'Técnico' ? 'tecnico' : 'colaborador' %>">
+                            <div class="mensaje-cabecera">
+                                <span class="mensaje-autor"><%= r.nombre %> <%= r.apellido %> — <%= r.nombre_rol %></span>
+                                <span class="mensaje-fecha"><%= new Date(r.fecha_respuesta).toLocaleString('es-CL') %></span>
+                            </div>
+                            <p class="mensaje-contenido"><%= r.contenido %></p>
+                        </div>
+                        <% }) %>
+                    </div>
+                <% } %>
+
+                <% if (ticket.nombre_estado !== 'Cerrado') { %>
+                <form method="POST" action="/colaborador/tickets/<%= ticket.id_ticket %>/respuesta" class="formulario-mensaje">
+                    <textarea name="contenido" rows="3" placeholder="Escribe tu mensaje..." required></textarea>
+                    <div class="acciones-formulario">
+                        <button type="submit" class="btn-primario">Enviar mensaje</button>
+                    </div>
+                </form>
+                <% } %>
+            </div>
+        </main>
+    </div>
+
+</div>
 </body>
 </html>

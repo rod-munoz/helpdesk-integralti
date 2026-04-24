@@ -6,79 +6,97 @@
     <title>Categorías — HelpDesk IntegralTI</title>
     <link rel="stylesheet" href="/css/estilos.css">
 </head>
+<script>
+    function toggleSidebar() {
+        document.querySelector('.sidebar-links').classList.toggle('abierto');
+    }
+</script>
 <body>
-    <nav class="navbar">
-        <span class="navbar-marca">HelpDesk IntegralTI</span>
-        <div class="navbar-links">
+<div class="layout">
+
+    <aside class="sidebar">
+        <div class="sidebar-marca">
+            <h1>HelpDesk IntegralTI</h1>
+            <span>Panel técnico</span>
+        </div>
+        <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">
+            <span></span><span></span><span></span>
+        </button>
+        <nav class="sidebar-links">
             <a href="/tecnico/tickets">Todos los tickets</a>
             <a href="/tecnico/categorias" class="activo">Categorías</a>
             <a href="/tecnico/perfil">Mi perfil</a>
             <a href="/logout">Cerrar sesión</a>
+        </nav>
+        <div class="sidebar-usuario">
+            <strong><%= usuario.nombre %> <%= usuario.apellido %></strong>
+            Técnico
         </div>
-        <span class="navbar-usuario"><%= usuario.nombre %> — Técnico</span>
-    </nav>
+    </aside>
 
-    <main class="contenedor">
-        <h1 class="titulo-seccion">Gestión de categorías</h1>
+    <div class="contenido-principal">
+        <main class="contenedor">
+            <h1 class="titulo-seccion">Gestión de categorías</h1>
 
-        <div class="panel-detalle">
+            <% if (error) { %>
+                <p class="error"><%= error %></p>
+            <% } %>
 
-            <!-- Formulario nueva categoria -->
-            <div>
-                <h2 class="subtitulo-seccion">Nueva categoría</h2>
-                <% if (error) { %>
-                    <p class="error"><%= error %></p>
-                <% } %>
-                <form method="POST" action="/tecnico/categorias" class="formulario">
-                    <div class="campo">
-                        <label for="nombre_categoria">Nombre *</label>
-                        <input type="text" id="nombre_categoria" name="nombre_categoria"
-                            required placeholder="Ej: Telefonía">
-                    </div>
-                    <div class="campo">
-                        <label for="descripcion">Descripción</label>
-                        <input type="text" id="descripcion" name="descripcion"
-                            placeholder="Descripción opcional">
-                    </div>
+            <h2 class="subtitulo-seccion">Nueva categoría</h2>
+            <form method="POST" action="/tecnico/categorias" class="formulario">
+                <div class="campo">
+                    <label for="nombre_categoria">Nombre *</label>
+                    <input type="text" id="nombre_categoria" name="nombre_categoria"
+                        required placeholder="Ej: Telefonía">
+                </div>
+                <div class="campo">
+                    <label for="descripcion">Descripción</label>
+                    <input type="text" id="descripcion" name="descripcion"
+                        placeholder="Descripción opcional">
+                </div>
+                <div class="acciones-formulario">
                     <button type="submit" class="btn-primario">Agregar categoría</button>
-                </form>
+                </div>
+            </form>
 
-                <!-- Lista de categorias -->
-                <h2 class="subtitulo-seccion" style="margin-top:2rem">Categorías existentes</h2>
-                <table class="tabla">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Descripción</th>
-                            <th>Estado</th>
-                            <th>Acciones</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <% categorias.forEach(cat => { %>
-                        <tr>
-                            <td><%= cat.nombre_categoria %></td>
-                            <td><%= cat.descripcion || '—' %></td>
-                            <td>
-                                <span class="estado <%= cat.activo ? 'estado-abierto' : 'estado-cerrado' %>">
-                                    <%= cat.activo ? 'Activa' : 'Inactiva' %>
-                                </span>
-                            </td>
-                            <td class="acciones-tabla">
-                                <a href="/tecnico/categorias/<%= cat.id_categoria %>/editar">Editar</a>
-                                <form method="POST" action="/tecnico/categorias/<%= cat.id_categoria %>/estado"
-                                    style="display:inline">
-                                    <button type="submit" class="btn-link">
-                                        <%= cat.activo ? 'Desactivar' : 'Activar' %>
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        <% }) %>
-                    </tbody>
-                </table>
+            <h2 class="subtitulo-seccion" style="margin-top:2rem">Categorías existentes</h2>
+            <div class="tabla-wrapper">
+            <table class="tabla">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% categorias.forEach(cat => { %>
+                    <tr>
+                        <td><%= cat.nombre_categoria %></td>
+                        <td><%= cat.descripcion || '—' %></td>
+                        <td>
+                            <span class="estado <%= cat.activo ? 'estado-abierto' : 'estado-cerrado' %>">
+                                <%= cat.activo ? 'Activa' : 'Inactiva' %>
+                            </span>
+                        </td>
+                        <td class="acciones-tabla">
+                            <a href="/tecnico/categorias/<%= cat.id_categoria %>/editar">Editar</a>
+                            <form method="POST" action="/tecnico/categorias/<%= cat.id_categoria %>/estado"
+                                style="display:inline">
+                                <button type="submit" class="btn-link">
+                                    <%= cat.activo ? 'Desactivar' : 'Activar' %>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    <% }) %>
+                </tbody>
+            </table>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
+
+</div>
 </body>
 </html>
