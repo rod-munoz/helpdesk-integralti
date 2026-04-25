@@ -101,9 +101,12 @@ body.pagina-login {
 .sidebar-colaborador .sidebar-marca {
     border-bottom: 1px solid #444442;
 }
-.sidebar-colaborador .sidebar-links a:hover,
+.sidebar-colaborador .sidebar-links a:hover {
+    background: #3a3a38;
+}
 .sidebar-colaborador .sidebar-links a.activo {
     background: #3a3a38;
+    border-left: 3px solid #4ad98b;
 }
 .sidebar-colaborador .sidebar-usuario {
     border-top: 1px solid #444442;
