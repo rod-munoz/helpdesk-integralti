@@ -105,7 +105,7 @@
                         <td><%= ticket.nombre_creador %> <%= ticket.apellido_creador %></td>
                         <td><%= ticket.nombre_categoria %></td>
                         <td>
-                            <span class="badge-<%= ticket.nombre_prioridad.toLowerCase() %>">
+                            <span class="badge-prioridad" style="--color-prioridad: <%= ticket.color %>">
                                 <%= ticket.nombre_prioridad %>
                             </span>
                         </td>

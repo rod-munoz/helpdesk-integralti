@@ -67,7 +67,7 @@
                             <% prioridades.forEach(p => { %>
                                 <label class="opcion-prioridad">
                                     <input type="radio" name="id_prioridad" value="<%= p.id_prioridad %>" required>
-                                    <span class="borde-<%= p.nombre_prioridad.toLowerCase() %>">
+                                    <span class="borde-prioridad" style="--color-prioridad: <%= p.color %>">
                                         <%= p.nombre_prioridad %>
                                     </span>
                                 </label>

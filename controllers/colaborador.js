@@ -9,6 +9,7 @@ const misTickets = async (req, res) => {
             SELECT t.*, 
                 e.nombre_estado, 
                 p.nombre_prioridad,
+                p.color,
                 c.nombre_categoria
             FROM tickets t
             JOIN estados e ON t.id_estado = e.id_estado
@@ -38,7 +39,10 @@ const misTickets = async (req, res) => {
     } catch (error) {
         console.error('Error al obtener tickets:', error.message);
         res.render('colaborador/mis-tickets', {
-            tickets: [], estados: [], filtro: '', usuario: req.usuario
+            tickets: [],
+            estados: [],
+            filtro: '',
+            usuario: req.usuario
         });
     }
 };
@@ -147,9 +151,9 @@ const enviarRespuesta = async (req, res) => {
     try {
         await Respuesta.crear({
             id_ticket,
-            id_usuario:  req.usuario.id,
-            contenido:   contenido.trim(),
-            nombre_rol:  req.usuario.rol
+            id_usuario: req.usuario.id,
+            contenido: contenido.trim(),
+            nombre_rol: req.usuario.rol
         });
         res.redirect(`/colaborador/tickets/${id_ticket}`);
     } catch (error) {
@@ -169,8 +173,12 @@ const cerrarTicket = async (req, res) => {
     }
 };
 
-module.exports = { 
-    misTickets, mostrarNuevoTicket, crearTicket, 
-    detalleTicket, detalleTicketConMensajes, 
-    enviarRespuesta, cerrarTicket
+module.exports = {
+    misTickets,
+    mostrarNuevoTicket,
+    crearTicket,
+    detalleTicket,
+    detalleTicketConMensajes,
+    enviarRespuesta,
+    cerrarTicket
 };

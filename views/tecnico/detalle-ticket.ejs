@@ -88,7 +88,7 @@
 
                     <div class="tarjeta-gestion">
                         <h3>Prioridad actual</h3>
-                        <span class="badge-<%= ticket.nombre_prioridad.toLowerCase() %>">
+                        <span class="badge-prioridad" style="--color-prioridad: <%= ticket.color %>">
                             <%= ticket.nombre_prioridad %>
                         </span>
                         <form method="POST" action="/tecnico/tickets/<%= ticket.id_ticket %>/prioridad" style="margin-top:1rem">
