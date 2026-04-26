@@ -481,6 +481,7 @@ body.pagina-login {
     margin-bottom: 1.5rem;
     align-items: center;
     flex-wrap: wrap;
+    justify-content: flex-end;
 }
 .filtros select {
     padding: 0.5rem 0.8rem;
@@ -824,5 +825,17 @@ body.pagina-login {
 
     .filtros .btn-primario {
         width: 100%;
+    }
+    /* Botones que deben mantener ancho de contenido en movil */
+    .btn-secundario {
+        width: 100%;
+    }
+    .cabecera-seccion .btn-primario {
+        width: 100%;
+        text-align: center;
+    }
+    .borde-prioridad {
+        width: 100%;
+        text-align: center;
     }
 }
