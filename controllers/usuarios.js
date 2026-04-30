@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const Usuario = require('../models/Usuario');
 
-// Muestra listado de usuarios y formulario de creacion
+// Muestra listado de usuarios y formulario de creación
 const listar = async (req, res) => {
     try {
         const [usuarios, roles, departamentos] = await Promise.all([
@@ -23,7 +23,7 @@ const listar = async (req, res) => {
     }
 };
 
-// Procesa la creacion de un nuevo usuario
+// Procesa la creación de un nuevo usuario
 const crear = async (req, res) => {
     // Sanitizar entradas
     const nombre = (req.body.nombre || '').trim();
@@ -34,7 +34,7 @@ const crear = async (req, res) => {
     const id_rol = req.body.id_rol;
     const id_departamento = req.body.id_departamento;
 
-    // Funcion auxiliar para re-renderizar con error
+    // Función auxiliar para re-renderizar con error
     const renderConError = async (error) => {
         const [usuarios, roles, departamentos] = await Promise.all([
             Usuario.obtenerTodos(),

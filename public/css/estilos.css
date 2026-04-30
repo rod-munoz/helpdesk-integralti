@@ -1,9 +1,4 @@
-/* ═══════════════════════════════════════════════════════
-   HELPDESK INTEGRALTI — Hoja de estilos principal
-   Tema: dark mode
-   ═══════════════════════════════════════════════════════ */
-
-/* ── RESET Y BASE ──────────────────────────────────────── */
+/* ----- RESET Y BASE ----- */
 * {
     margin: 0;
     padding: 0;
@@ -45,7 +40,7 @@ button:hover {
     background: #5a9aee;
 }
 
-/* ── LOGIN ─────────────────────────────────────────────── */
+/* ----- LOGIN ----- */
 body.pagina-login {
     display: flex;
     justify-content: center;
@@ -61,7 +56,7 @@ body.pagina-login {
     max-width: 400px;
 }
 
-/* ── LAYOUT CON SIDEBAR ────────────────────────────────── */
+/* ----- LAYOUT CON SIDEBAR ----- */
 .layout {
     display: flex;
     min-height: 100vh;
@@ -80,7 +75,7 @@ body.pagina-login {
     padding: 0 1.5rem;
 }
 
-/* ── SIDEBAR ───────────────────────────────────────────── */
+/* ----- SIDEBAR ----- */
 .sidebar {
     width: 240px;
     min-width: 240px;
@@ -178,7 +173,7 @@ body.pagina-login {
     margin: 5px 0;
 }
 
-/* ── TIPOGRAFÍA Y TEXTOS ───────────────────────────────── */
+/* ----- TIPOGRAFÍA Y TEXTOS ----- */
 .titulo-seccion {
     font-size: 1.4rem;
     color: #ffffff;
@@ -204,7 +199,7 @@ body.pagina-login {
     margin-bottom: 1rem;
 }
 
-/* ── BOTONES ───────────────────────────────────────────── */
+/* ----- BOTONES ----- */
 .btn-primario,
 .btn-secundario {
     background: transparent;
@@ -239,7 +234,7 @@ body.pagina-login {
     text-decoration: underline;
 }
 
-/* ── CAMPOS Y FORMULARIOS ──────────────────────────────── */
+/* ----- CAMPOS Y FORMULARIOS ----- */
 .campo {
     margin-bottom: 1.2rem;
 }
@@ -293,7 +288,7 @@ body.pagina-login {
     justify-content: flex-end;
 }
 
-/* ── ESTADOS Y BADGES ──────────────────────────────────── */
+/* ----- ESTADOS Y BADGES ----- */
 
 /* Estados del ticket */
 .estado {
@@ -362,7 +357,7 @@ body.pagina-login {
     opacity: 1;
 }
 
-/* ── ALERTAS Y MENSAJES ────────────────────────────────── */
+/* ----- ALERTAS Y MENSAJES ----- */
 .error {
     background: #4a2020;
     color: #ff6b6b;
@@ -381,7 +376,7 @@ body.pagina-login {
     font-size: 0.9rem;
 }
 
-/* ── TABLA ─────────────────────────────────────────────── */
+/* ----- TABLA ----- */
 .tabla-wrapper {
     overflow-x: auto;
 }
@@ -426,7 +421,7 @@ body.pagina-login {
     font-size: 0.9rem;
 }
 
-/* ── CABECERA DE SECCIÓN ───────────────────────────────── */
+/* ----- CABECERA DE SECCIÓN ----- */
 .cabecera-seccion {
     display: flex;
     justify-content: space-between;
@@ -438,7 +433,7 @@ body.pagina-login {
     color: #ffffff;
 }
 
-/* ── TARJETAS RESUMEN (panel técnico) ──────────────────── */
+/* ----- TARJETAS RESUMEN (panel técnico) ----- */
 .tarjetas-resumen {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -474,7 +469,7 @@ body.pagina-login {
     color: #b0b0b0;
 } /* Cerrado — gris */
 
-/* ── FILTROS (panel técnico) ───────────────────────────── */
+/* ----- FILTROS (panel técnico) ----- */
 .filtros {
     display: flex;
     gap: 1rem;
@@ -499,7 +494,7 @@ body.pagina-login {
     justify-content: center;
 }
 
-/* ── DETALLE DE TICKET ─────────────────────────────────── */
+/* ----- DETALLE DE TICKET ----- */
 .tarjeta-detalle {
     background: #2a2a28;
     padding: 1.5rem;
@@ -549,7 +544,7 @@ body.pagina-login {
     margin: 0;
 }
 
-/* ── PANEL DE GESTIÓN (solo técnico) ───────────────────── */
+/* ----- PANEL DE GESTIÓN (solo técnico) ----- */
 .panel-detalle {
     display: grid;
     grid-template-columns: 1fr 280px;
@@ -586,7 +581,7 @@ body.pagina-login {
     color: #e0e0e0;
 }
 
-/* ── CONVERSACIÓN / MENSAJES ───────────────────────────── */
+/* ----- CONVERSACIÓN / MENSAJES ----- */
 .seccion-conversacion {
     background: #2a2a28;
     padding: 1.5rem;
@@ -661,7 +656,7 @@ body.pagina-login {
     border-color: #5a9aee;
 }
 
-/* ── PERFIL DE USUARIO ─────────────────────────────────── */
+/* ----- PERFIL DE USUARIO ----- */
 .panel-perfil {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -684,7 +679,7 @@ body.pagina-login {
     color: #c0c0c0;
 }
 
-/* ── RESPONSIVE ────────────────────────────────────────── */
+/* ----- RESPONSIVE ----- */
 
 /* Tablet (hasta 900px) */
 @media (max-width: 900px) {
@@ -812,7 +807,7 @@ body.pagina-login {
         flex-direction: column;
     }
 
-    /* Botones de prioridad y filtros al ancho completo en movil */
+    /* Botones de prioridad y filtros al ancho completo en móvil */
     .opciones-prioridad {
         gap: 0.5rem;
     }
@@ -826,7 +821,7 @@ body.pagina-login {
     .filtros .btn-primario {
         width: 100%;
     }
-    /* Botones que deben mantener ancho de contenido en movil */
+    /* Botones que deben mantener ancho de contenido en móvil */
     .btn-secundario {
         width: 100%;
     }

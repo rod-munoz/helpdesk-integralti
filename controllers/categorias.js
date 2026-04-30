@@ -1,6 +1,6 @@
 const Categoria = require('../models/Categoria');
 
-// Lista todas las categorias
+// Lista todas las categorías
 const listar = async (req, res) => {
     try {
         const categorias = await Categoria.obtenerTodas();
@@ -11,7 +11,7 @@ const listar = async (req, res) => {
     }
 };
 
-// Procesa creacion de nueva categoria
+// Procesa creación de nueva categoría
 const crear = async (req, res) => {
     const { nombre_categoria, descripcion } = req.body;
 
@@ -33,7 +33,7 @@ const crear = async (req, res) => {
     }
 };
 
-// Muestra formulario de edicion
+// Muestra formulario de edición
 const mostrarEditar = async (req, res) => {
     try {
         const categoria = await Categoria.obtenerPorId(req.params.id);
@@ -45,7 +45,7 @@ const mostrarEditar = async (req, res) => {
     }
 };
 
-// Procesa edicion de categoria
+// Procesa edición de categoría
 const actualizar = async (req, res) => {
     const { nombre_categoria, descripcion } = req.body;
 
@@ -67,7 +67,7 @@ const actualizar = async (req, res) => {
     }
 };
 
-// Activa o desactiva una categoria
+// Activa o desactiva una categoría
 const cambiarEstado = async (req, res) => {
     try {
         const categoria = await Categoria.obtenerPorId(req.params.id);

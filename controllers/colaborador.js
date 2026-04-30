@@ -68,7 +68,7 @@ const mostrarNuevoTicket = async (req, res) => {
 const crearTicket = async (req, res) => {
     const { titulo, descripcion, id_categoria, id_prioridad } = req.body;
 
-    // Validacion basica
+    // Validación básica
     if (!titulo || !descripcion || !id_categoria || !id_prioridad) {
         const categorias = await Ticket.obtenerCategorias();
         const prioridades = await Ticket.obtenerPrioridades();
@@ -139,7 +139,7 @@ const detalleTicketConMensajes = async (req, res) => {
     }
 };
 
-// Procesa el envio de un mensaje
+// Procesa el envío de un mensaje
 const enviarRespuesta = async (req, res) => {
     const { contenido } = req.body;
     const id_ticket = req.params.id;

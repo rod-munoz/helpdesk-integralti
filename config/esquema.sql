@@ -1,4 +1,4 @@
--- Tablas de catálogo (datos estables)
+-- Tablas de catálogo
 CREATE TABLE
     IF NOT EXISTS roles (
         id_rol INT AUTO_INCREMENT PRIMARY KEY,

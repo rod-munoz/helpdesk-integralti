@@ -4,13 +4,13 @@ const Ticket = require('../models/Ticket');
 const todosLosTickets = async (req, res) => {
     try {
         const filtros = {
-            id_estado:    req.query.estado    || null,
+            id_estado: req.query.estado || null,
             id_categoria: req.query.categoria || null,
             id_prioridad: req.query.prioridad || null
         };
 
         // Elimina filtros vacíos
-        Object.keys(filtros).forEach(k => !filtros[k] && delete filtros[k]);
+        Object.keys(filtros).forEach((k) => !filtros[k] && delete filtros[k]);
 
         const [tickets, resumen, estados, categorias, prioridades] = await Promise.all([
             Ticket.obtenerTodos(filtros),
@@ -32,9 +32,13 @@ const todosLosTickets = async (req, res) => {
     } catch (error) {
         console.error('Error al obtener tickets:', error.message);
         res.render('tecnico/todos-tickets', {
-            tickets: [], resumen: [], estados: [],
-            categorias: [], prioridades: [],
-            filtros: {}, usuario: req.usuario
+            tickets: [],
+            resumen: [],
+            estados: [],
+            categorias: [],
+            prioridades: [],
+            filtros: {},
+            usuario: req.usuario
         });
     }
 };
@@ -111,7 +115,7 @@ const detalleTicketConMensajes = async (req, res) => {
     }
 };
 
-// Procesa el envio de un mensaje
+// Procesa el envío de un mensaje
 const enviarRespuesta = async (req, res) => {
     const { contenido } = req.body;
     const id_ticket = req.params.id;
@@ -123,9 +127,9 @@ const enviarRespuesta = async (req, res) => {
     try {
         await Respuesta.crear({
             id_ticket,
-            id_usuario:  req.usuario.id,
-            contenido:   contenido.trim(),
-            nombre_rol:  req.usuario.rol
+            id_usuario: req.usuario.id,
+            contenido: contenido.trim(),
+            nombre_rol: req.usuario.rol
         });
         res.redirect(`/tecnico/tickets/${id_ticket}`);
     } catch (error) {
@@ -134,7 +138,11 @@ const enviarRespuesta = async (req, res) => {
     }
 };
 
-module.exports = { 
-    todosLosTickets, detalleTicket, actualizarEstado, actualizarPrioridad,
-    detalleTicketConMensajes, enviarRespuesta
+module.exports = {
+    todosLosTickets,
+    detalleTicket,
+    actualizarEstado,
+    actualizarPrioridad,
+    detalleTicketConMensajes,
+    enviarRespuesta
 };

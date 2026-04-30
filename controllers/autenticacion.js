@@ -26,16 +26,18 @@ const procesarLogin = async (req, res) => {
 
         // Verificar que la cuenta esté activa
         if (!usuario.activo) {
-            return res.render('login', { error: 'Cuenta deshabilitada, contacta al administrador' });
+            return res.render('login', {
+                error: 'Cuenta deshabilitada, contacta al administrador'
+            });
         }
 
         // Crear token JWT con datos del usuario
         const token = jwt.sign(
             {
-                id:       usuario.id_usuario,
-                nombre:   usuario.nombre,
+                id: usuario.id_usuario,
+                nombre: usuario.nombre,
                 apellido: usuario.apellido,
-                rol:      usuario.nombre_rol
+                rol: usuario.nombre_rol
             },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRES_IN }
@@ -49,7 +51,6 @@ const procesarLogin = async (req, res) => {
             return res.redirect('/tecnico/tickets');
         }
         return res.redirect('/colaborador/tickets');
-
     } catch (error) {
         console.error('Error en login:', error.message);
         res.render('login', { error: 'Error del servidor, intenta de nuevo' });
