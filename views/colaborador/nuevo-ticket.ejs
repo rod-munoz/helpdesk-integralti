@@ -1,97 +1,119 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nuevo ticket — HelpDesk IntegralTI</title>
-    <link rel="stylesheet" href="/css/estilos.css">
-</head>
-<script>
-    function toggleSidebar() {
-        document.querySelector('.sidebar-links').classList.toggle('abierto');
-    }
-</script>
-<body>
-<div class="layout">
-
-    <aside class="sidebar sidebar-colaborador">
-        <div class="sidebar-marca">
-            <h1>HelpDesk IntegralTI</h1>
-            <span>Panel colaborador</span>
-        </div>
-        <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">
-            <span></span><span></span><span></span>
-        </button>
-        <nav class="sidebar-links">
-            <a href="/colaborador/tickets">Mis tickets</a>
-            <a href="/colaborador/tickets/nuevo" class="activo">Nuevo ticket</a>
-            <a href="/colaborador/perfil">Mi perfil</a>
-            <a href="/logout">Cerrar sesión</a>
-        </nav>
-        <div class="sidebar-usuario">
-            <strong><%= usuario.nombre %> <%= usuario.apellido %></strong>
-            Colaborador
-        </div>
-    </aside>
-
-    <div class="contenido-principal">
-        <main class="contenedor">
-            <h1>Nuevo ticket</h1>
-            <p class="subtitulo">Describa su problema y el equipo de soporte lo atenderá a la brevedad.</p>
-
-            <% if (error) { %>
-                <p class="error"><%= error %></p>
-            <% } %>
-
-            <form method="POST" action="/colaborador/tickets/nuevo" class="formulario">
-                <div class="campo">
-                    <label for="titulo">Título del problema *</label>
-                    <input type="text" id="titulo" name="titulo" required
-                        placeholder="Ej: Excel no abre desde ayer">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Nuevo ticket — HelpDesk IntegralTI</title>
+        <link rel="stylesheet" href="/css/estilos.css" />
+    </head>
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar-links').classList.toggle('abierto');
+        }
+    </script>
+    <body>
+        <div class="layout">
+            <aside class="sidebar sidebar-colaborador">
+                <div class="sidebar-marca">
+                    <h1>HelpDesk IntegralTI</h1>
+                    <span>Panel colaborador</span>
                 </div>
+                <button class="sidebar-toggle" onclick="toggleSidebar()" aria-label="Menu">
+                    <span></span><span></span><span></span>
+                </button>
+                <nav class="sidebar-links">
+                    <a href="/colaborador/tickets">Mis tickets</a>
+                    <a href="/colaborador/tickets/nuevo" class="activo">Nuevo ticket</a>
+                    <a href="/colaborador/perfil">Mi perfil</a>
+                    <a href="/logout">Cerrar sesión</a>
+                </nav>
+                <div class="sidebar-usuario">
+                    <strong><%= usuario.nombre %> <%= usuario.apellido %></strong>
+                    Colaborador
+                </div>
+            </aside>
 
-                <div class="fila-campos">
-                    <div class="campo">
-                        <label for="id_categoria">Categoría *</label>
-                        <select id="id_categoria" name="id_categoria" required>
-                            <option value="">Seleccione una categoría</option>
-                            <% categorias.forEach(cat => { %>
-                                <option value="<%= cat.id_categoria %>"><%= cat.nombre_categoria %></option>
-                            <% }) %>
-                        </select>
-                    </div>
+            <div class="contenido-principal">
+                <main class="contenedor">
+                    <h1>Nuevo ticket</h1>
+                    <p class="subtitulo">
+                        Describa su problema y el equipo de soporte lo atenderá a la brevedad.
+                    </p>
 
-                    <div class="campo">
-                        <label>Prioridad *</label>
-                        <div class="opciones-prioridad">
-                            <% prioridades.forEach(p => { %>
-                                <label class="opcion-prioridad">
-                                    <input type="radio" name="id_prioridad" value="<%= p.id_prioridad %>" required>
-                                    <span class="borde-prioridad" style="--color-prioridad: <%= p.color %>">
-                                        <%= p.nombre_prioridad %>
-                                    </span>
-                                </label>
-                            <% }) %>
+                    <% if (error) { %>
+                    <p class="error"><%= error %></p>
+                    <% } %>
+
+                    <form method="POST" action="/colaborador/tickets/nuevo" class="formulario">
+                        <div class="campo">
+                            <label for="titulo">Título del problema *</label>
+                            <input
+                                type="text"
+                                id="titulo"
+                                name="titulo"
+                                required
+                                placeholder="Ej: Excel no abre desde ayer"
+                            />
                         </div>
-                    </div>
-                </div>
 
-                <div class="campo">
-                    <label for="descripcion">Descripción del problema *</label>
-                    <textarea id="descripcion" name="descripcion" rows="5" required
-                        placeholder="Describa el problema, indique desde cuándo ocurre e incluya mensajes de error si existen."></textarea>
-                </div>
+                        <div class="fila-campos">
+                            <div class="campo">
+                                <label for="id_categoria">Categoría *</label>
+                                <select id="id_categoria" name="id_categoria" required>
+                                    <option value="">Seleccione una categoría</option>
+                                    <% categorias.forEach(cat => { %>
+                                    <option value="<%= cat.id_categoria %>">
+                                        <%= cat.nombre_categoria %>
+                                    </option>
+                                    <% }) %>
+                                </select>
+                            </div>
 
-                <p class="nota">* Campos obligatorios</p>
+                            <div class="campo">
+                                <label>Prioridad *</label>
+                                <div class="opciones-prioridad">
+                                    <% prioridades.forEach(p => { %>
+                                    <label class="opcion-prioridad">
+                                        <input
+                                            type="radio"
+                                            name="id_prioridad"
+                                            value="<%= p.id_prioridad %>"
+                                            required
+                                        />
+                                        <span
+                                            class="borde-prioridad"
+                                            style="--color-prioridad: <%= p.color %>"
+                                        >
+                                            <%= p.nombre_prioridad %>
+                                        </span>
+                                    </label>
+                                    <% }) %>
+                                </div>
+                            </div>
+                        </div>
 
-                <div class="acciones-formulario">
-                    <a href="/tecnico/tickets"><button type="button" class="btn-primario">Cancelar</button></a>
-                    <button type="submit" class="btn-primario">Enviar ticket</button>
-                </div>
-            </form>
-        </main>
-    </div>
+                        <div class="campo">
+                            <label for="descripcion">Descripción del problema *</label>
+                            <textarea
+                                id="descripcion"
+                                name="descripcion"
+                                rows="5"
+                                required
+                                placeholder="Describa el problema, indique desde cuándo ocurre e incluya mensajes de error si existen."
+                            ></textarea>
+                        </div>
 
-</div>
-</body>
+                        <p class="nota">* Campos obligatorios</p>
+
+                        <div class="acciones-formulario">
+                            <a href="/tecnico/tickets"
+                                ><button type="button" class="btn-primario">Cancelar</button></a
+                            >
+                            <button type="submit" class="btn-primario">Enviar ticket</button>
+                        </div>
+                    </form>
+                </main>
+            </div>
+        </div>
+    </body>
 </html>

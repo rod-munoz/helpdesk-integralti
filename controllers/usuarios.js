@@ -61,6 +61,13 @@ const crear = async (req, res) => {
     if (!regexEmail.test(email)) {
         return renderConError('El correo electrónico no tiene un formato válido');
     }
+    // Validar largo máximo de email (consistente con VARCHAR(100) en MySQL)
+    if (email.length > 100) {
+        return renderConError('El correo electrónico no puede superar 100 caracteres');
+    }
+    if (password.length < 6) {
+        return renderConError('La contraseña debe tener al menos 6 caracteres');
+    }
 
     if (password.length < 6) {
         return renderConError('La contraseña debe tener al menos 6 caracteres');

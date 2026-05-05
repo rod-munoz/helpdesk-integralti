@@ -52,10 +52,10 @@
                 <select name="estado">
                     <option value="">Todos los estados</option>
                     <% estados.forEach(e => { %>
-                        <option value="<%= e.id_estado %>"
-                            <%= filtros.estado == e.id_estado ? 'selected' : '' %>>
-                            <%= e.nombre_estado %>
-                        </option>
+                        <option value="<%= e.id_estado %>" 
+    <%= filtros.estado == e.id_estado ? 'selected' : '' %>>
+    <%= e.nombre_estado %>
+</option>
                     <% }) %>
                 </select>
                 <select name="categoria">

@@ -48,8 +48,7 @@
                     <select name="estado">
                         <option value="">Todos los estados</option>
                         <% estados.forEach(e => { %>
-                            <option value="<%= e.id_estado %>"
-                                <%= filtro == e.id_estado ? 'selected' : '' %>>
+                            <option value="<%= e.id_estado %>" <%= filtro == e.id_estado ? 'selected' : '' %>>
                                 <%= e.nombre_estado %>
                             </option>
                         <% }) %>
