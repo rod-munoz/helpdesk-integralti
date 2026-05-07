@@ -68,15 +68,45 @@ const mostrarNuevoTicket = async (req, res) => {
 const crearTicket = async (req, res) => {
     const { titulo, descripcion, id_categoria, id_prioridad } = req.body;
 
-    // Validación básica
-    if (!titulo || !descripcion || !id_categoria || !id_prioridad) {
+    // Validación específica por campo
+    if (!titulo || !titulo.trim()) {
         const categorias = await Ticket.obtenerCategorias();
         const prioridades = await Ticket.obtenerPrioridades();
         return res.render('colaborador/nuevo-ticket', {
             categorias,
             prioridades,
             usuario: req.usuario,
-            error: 'Todos los campos son obligatorios'
+            error: 'El título es obligatorio'
+        });
+    }
+    if (!id_categoria) {
+        const categorias = await Ticket.obtenerCategorias();
+        const prioridades = await Ticket.obtenerPrioridades();
+        return res.render('colaborador/nuevo-ticket', {
+            categorias,
+            prioridades,
+            usuario: req.usuario,
+            error: 'Debe seleccionar una categoría'
+        });
+    }
+    if (!id_prioridad) {
+        const categorias = await Ticket.obtenerCategorias();
+        const prioridades = await Ticket.obtenerPrioridades();
+        return res.render('colaborador/nuevo-ticket', {
+            categorias,
+            prioridades,
+            usuario: req.usuario,
+            error: 'Debe seleccionar una prioridad'
+        });
+    }
+    if (!descripcion || !descripcion.trim()) {
+        const categorias = await Ticket.obtenerCategorias();
+        const prioridades = await Ticket.obtenerPrioridades();
+        return res.render('colaborador/nuevo-ticket', {
+            categorias,
+            prioridades,
+            usuario: req.usuario,
+            error: 'La descripción es obligatoria'
         });
     }
 
