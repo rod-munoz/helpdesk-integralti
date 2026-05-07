@@ -55,6 +55,7 @@
                                     name="nombre"
                                     required
                                     placeholder="Nombre"
+                                    value="<%= valores && valores.nombre ? valores.nombre : '' %>"
                                 />
                             </div>
                             <div class="campo">
@@ -65,6 +66,7 @@
                                     name="apellido"
                                     required
                                     placeholder="Apellido"
+                                    value="<%= valores && valores.apellido ? valores.apellido : '' %>"
                                 />
                             </div>
                         </div>
@@ -77,6 +79,7 @@
                                 name="email"
                                 required
                                 placeholder="correo@integralti.cl"
+                                value="<%= valores && valores.email ? valores.email : '' %>"
                             />
                         </div>
 
@@ -108,7 +111,10 @@
                                 <select id="id_rol" name="id_rol" required>
                                     <option value="">Seleccione un perfil</option>
                                     <% roles.forEach(r => { %>
-                                    <option value="<%= r.id_rol %>"><%= r.nombre_rol %></option>
+                                    <option value="<%= r.id_rol %>"
+                                        <%= valores && valores.id_rol == r.id_rol ? 'selected' : '' %>>
+                                        <%= r.nombre_rol %>
+                                    </option>
                                     <% }) %>
                                 </select>
                             </div>
@@ -117,7 +123,8 @@
                                 <select id="id_departamento" name="id_departamento" required>
                                     <option value="">Seleccione un departamento</option>
                                     <% departamentos.forEach(d => { %>
-                                    <option value="<%= d.id_departamento %>">
+                                    <option value="<%= d.id_departamento %>"
+                                        <%= valores && valores.id_departamento == d.id_departamento ? 'selected' : '' %>>
                                         <%= d.nombre_departamento %>
                                     </option>
                                     <% }) %>

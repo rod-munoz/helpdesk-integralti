@@ -15,7 +15,8 @@ const listar = async (req, res) => {
             departamentos,
             usuario: req.usuario,
             error: null,
-            exito: null
+            exito: null,
+            valores: null
         });
     } catch (error) {
         console.error('Error al listar usuarios:', error.message);
@@ -35,7 +36,7 @@ const crear = async (req, res) => {
     const id_departamento = req.body.id_departamento;
 
     // Función auxiliar para re-renderizar con error
-    const renderConError = async (error) => {
+    const renderConError = async (error, valores = {}) => {
         const [usuarios, roles, departamentos] = await Promise.all([
             Usuario.obtenerTodos(),
             Usuario.obtenerRoles(),
@@ -47,7 +48,8 @@ const crear = async (req, res) => {
             departamentos,
             usuario: req.usuario,
             error,
-            exito: null
+            exito: null,
+            valores
         });
     };
 
@@ -59,22 +61,40 @@ const crear = async (req, res) => {
     // Validar formato de email
     const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!regexEmail.test(email)) {
-        return renderConError('El correo electrónico no tiene un formato válido');
+        return renderConError('El correo electrónico no tiene un formato válido', {
+            nombre,
+            apellido,
+            email,
+            id_rol,
+            id_departamento
+        });
     }
-    // Validar largo máximo de email (consistente con VARCHAR(100) en MySQL)
     if (email.length > 100) {
-        return renderConError('El correo electrónico no puede superar 100 caracteres');
+        return renderConError('El correo electrónico no puede superar 100 caracteres', {
+            nombre,
+            apellido,
+            email,
+            id_rol,
+            id_departamento
+        });
     }
     if (password.length < 6) {
-        return renderConError('La contraseña debe tener al menos 6 caracteres');
+        return renderConError('La contraseña debe tener al menos 6 caracteres', {
+            nombre,
+            apellido,
+            email,
+            id_rol,
+            id_departamento
+        });
     }
-
-    if (password.length < 6) {
-        return renderConError('La contraseña debe tener al menos 6 caracteres');
-    }
-
     if (password !== confirmar) {
-        return renderConError('Las contraseñas no coinciden');
+        return renderConError('Las contraseñas no coinciden', {
+            nombre,
+            apellido,
+            email,
+            id_rol,
+            id_departamento
+        });
     }
 
     try {
@@ -92,7 +112,8 @@ const crear = async (req, res) => {
             departamentos,
             usuario: req.usuario,
             error: null,
-            exito: `Usuario ${nombre} ${apellido} creado correctamente`
+            exito: `Usuario ${nombre} ${apellido} creado correctamente`,
+            valores: null
         });
     } catch (error) {
         const mensajeError =

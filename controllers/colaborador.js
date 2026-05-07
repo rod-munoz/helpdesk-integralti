@@ -56,7 +56,8 @@ const mostrarNuevoTicket = async (req, res) => {
             categorias,
             prioridades,
             usuario: req.usuario,
-            error: null
+            error: null,
+            valores: null
         });
     } catch (error) {
         console.error('Error al cargar formulario:', error.message);
@@ -68,25 +69,15 @@ const mostrarNuevoTicket = async (req, res) => {
 const crearTicket = async (req, res) => {
     const { titulo, descripcion, id_categoria, id_prioridad } = req.body;
 
-    // Validación específica por campo
-    if (!titulo || !titulo.trim()) {
+    // Validación básica
+    if (!titulo || !descripcion || !id_categoria) {
         const categorias = await Ticket.obtenerCategorias();
         const prioridades = await Ticket.obtenerPrioridades();
         return res.render('colaborador/nuevo-ticket', {
             categorias,
             prioridades,
             usuario: req.usuario,
-            error: 'El título es obligatorio'
-        });
-    }
-    if (!id_categoria) {
-        const categorias = await Ticket.obtenerCategorias();
-        const prioridades = await Ticket.obtenerPrioridades();
-        return res.render('colaborador/nuevo-ticket', {
-            categorias,
-            prioridades,
-            usuario: req.usuario,
-            error: 'Debe seleccionar una categoría'
+            error: 'Todos los campos son obligatorios'
         });
     }
     if (!id_prioridad) {
@@ -96,17 +87,8 @@ const crearTicket = async (req, res) => {
             categorias,
             prioridades,
             usuario: req.usuario,
-            error: 'Debe seleccionar una prioridad'
-        });
-    }
-    if (!descripcion || !descripcion.trim()) {
-        const categorias = await Ticket.obtenerCategorias();
-        const prioridades = await Ticket.obtenerPrioridades();
-        return res.render('colaborador/nuevo-ticket', {
-            categorias,
-            prioridades,
-            usuario: req.usuario,
-            error: 'La descripción es obligatoria'
+            error: 'Debe seleccionar una prioridad',
+            valores: { titulo, descripcion, id_categoria }
         });
     }
 
