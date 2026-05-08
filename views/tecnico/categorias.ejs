@@ -93,19 +93,22 @@
                                             <%= cat.activo ? 'Activa' : 'Inactiva' %>
                                         </span>
                                     </td>
-                                    <td class="acciones-tabla">
-                                        <a href="/tecnico/categorias/<%= cat.id_categoria %>/editar"
-                                            >Editar</a
-                                        >
-                                        <form
-                                            method="POST"
-                                            action="/tecnico/categorias/<%= cat.id_categoria %>/estado"
-                                            style="display: inline"
-                                        >
-                                            <button type="submit" class="btn-link">
-                                                <%= cat.activo ? 'Desactivar' : 'Activar' %>
-                                            </button>
-                                        </form>
+                                    <td>
+                                        <div class="acciones-tabla">
+                                            <a
+                                                href="/tecnico/categorias/<%= cat.id_categoria %>/editar"
+                                                >Editar</a
+                                            >
+                                            <form
+                                                method="POST"
+                                                action="/tecnico/categorias/<%= cat.id_categoria %>/estado"
+                                                style="display: inline"
+                                            >
+                                                <button type="submit" class="btn-link">
+                                                    <%= cat.activo ? 'Desactivar' : 'Activar' %>
+                                                </button>
+                                            </form>
+                                        </div>
                                     </td>
                                 </tr>
                                 <% }) %>
